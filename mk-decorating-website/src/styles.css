@@ -71,7 +71,19 @@ a {
 
 .brand {
   display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.brand-copy {
+  display: flex;
   flex-direction: column;
+}
+
+.brand-logo {
+  width: 58px;
+  height: auto;
+  flex: none;
 }
 
 .brand-title {
@@ -114,6 +126,16 @@ a {
   grid-template-columns: 1.2fr 1fr;
   gap: 2rem;
   align-items: center;
+}
+
+.hero-brand-lockup {
+  margin-bottom: 1.1rem;
+}
+
+.hero-logo {
+  width: min(180px, 38vw);
+  height: auto;
+  display: block;
 }
 
 .eyebrow {
@@ -440,6 +462,19 @@ h3 {
   gap: 1rem;
 }
 
+.footer-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.footer-logo {
+  width: 56px;
+  height: auto;
+  flex: none;
+}
+
 .footer p {
   color: rgba(229, 243, 247, 0.8);
   margin: 0.35rem 0;
@@ -455,6 +490,14 @@ h3 {
 
   .nav-links {
     display: none;
+  }
+
+  .brand-logo {
+    width: 48px;
+  }
+
+  .hero-logo {
+    width: 140px;
   }
 
   .feature-grid {

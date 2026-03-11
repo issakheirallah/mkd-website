@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import LogoMark from '../components/LogoMark'
 
 export default function Home() {
   return (
@@ -6,6 +7,9 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-grid">
           <div>
+            <div className="hero-brand-lockup">
+              <LogoMark className="hero-logo" />
+            </div>
             <p className="eyebrow">Trusted decorating specialists</p>
             <h1>Quality decorating, refurbishment, and maintenance with a premium finish.</h1>
             <p className="lead">

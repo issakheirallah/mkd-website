@@ -1,12 +1,16 @@
 import { Link, NavLink } from 'react-router-dom'
+import LogoMark from './LogoMark'
 
 export default function Navbar() {
   return (
     <header className="navbar">
       <div className="container navbar-inner">
         <Link to="/" className="brand">
-          <span className="brand-title">MK Decorating</span>
-          <span className="brand-subtitle">Refurbishment & Maintenance</span>
+          <LogoMark className="brand-logo" />
+          <span className="brand-copy">
+            <span className="brand-title">MK Decorating</span>
+            <span className="brand-subtitle">Refurbishment & Maintenance</span>
+          </span>
         </Link>
 
         <nav className="nav-links">
