@@ -449,6 +449,63 @@ h3 {
   max-width: 14ch;
 }
 
+.faq-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.faq-intro {
+  position: sticky;
+  top: 108px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.faq-item {
+  padding: 0;
+  overflow: hidden;
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.35rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  line-height: 1;
+  flex: none;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-item p {
+  margin: 0;
+  padding: 0 1.5rem 1.5rem;
+  color: var(--color-muted);
+}
+
 .footer {
   background:
     linear-gradient(180deg, #1d3557, #162842);
@@ -483,6 +540,7 @@ h3 {
 @media (max-width: 900px) {
   .hero-grid,
   .two-column,
+  .faq-layout,
   .footer-inner,
   .card-grid.three {
     grid-template-columns: 1fr;
@@ -502,6 +560,10 @@ h3 {
 
   .feature-grid {
     grid-template-columns: 1fr;
+  }
+
+  .faq-intro {
+    position: static;
   }
 
   .form-grid {
