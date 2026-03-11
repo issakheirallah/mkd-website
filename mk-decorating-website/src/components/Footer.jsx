@@ -1,3 +1,5 @@
+import { businessInfo } from '../content/siteContent'
+
 export default function Footer() {
   return (
     <footer className="footer">
@@ -7,9 +9,9 @@ export default function Footer() {
           <p>Professional decorating, refurbishment, and maintenance services.</p>
         </div>
         <div>
-          <p>Phone: Add your number</p>
-          <p>Email: Add your email</p>
-          <p>Areas Covered: Add your service area</p>
+          <p>Phone: {businessInfo.phone}</p>
+          <p>Email: {businessInfo.email}</p>
+          <p>Areas Covered: {businessInfo.serviceArea}</p>
         </div>
       </div>
     </footer>

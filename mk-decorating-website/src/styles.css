@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
   color: #1c1917;
   background: #f8f7f4;
   line-height: 1.5;
@@ -242,6 +242,47 @@ h3 {
 .project-image {
   height: 220px;
   background: linear-gradient(135deg, #d6d3d1, #f5f5f4, #e7e5e4);
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.project-tone-warm {
+  background:
+    linear-gradient(135deg, rgba(94, 58, 38, 0.92), rgba(209, 133, 79, 0.5)),
+    radial-gradient(circle at top right, rgba(255, 241, 220, 0.4), transparent 38%);
+}
+
+.project-tone-slate {
+  background:
+    linear-gradient(135deg, rgba(42, 53, 66, 0.94), rgba(111, 137, 161, 0.55)),
+    radial-gradient(circle at top right, rgba(210, 227, 241, 0.3), transparent 40%);
+}
+
+.project-tone-olive {
+  background:
+    linear-gradient(135deg, rgba(61, 71, 49, 0.94), rgba(143, 161, 104, 0.55)),
+    radial-gradient(circle at top right, rgba(232, 239, 212, 0.28), transparent 42%);
+}
+
+.project-badges {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.project-badges span {
+  display: inline-flex;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .project-body {
@@ -255,6 +296,22 @@ h3 {
   color: #78716c;
   font-weight: 700;
   margin-bottom: 0.5rem;
+}
+
+.project-list {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  color: #44403c;
+}
+
+.project-list li + li {
+  margin-top: 0.65rem;
+}
+
+.project-result {
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e7e5e4;
 }
 
 .two-column {
@@ -275,6 +332,82 @@ h3 {
 
 .contact-block + .contact-block {
   margin-top: 1.25rem;
+}
+
+.contact-sidebar {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.quote-form {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.quote-form label {
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #292524;
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+  width: 100%;
+  border: 1px solid #d6d3d1;
+  background: #fcfcfb;
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  color: #1c1917;
+}
+
+.quote-form textarea {
+  resize: vertical;
+}
+
+.quote-form input:focus,
+.quote-form select:focus,
+.quote-form textarea:focus {
+  outline: 2px solid rgba(28, 25, 23, 0.12);
+  border-color: #78716c;
+}
+
+.field-error {
+  font-size: 0.82rem;
+  color: #b42318;
+  font-weight: 600;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-note,
+.form-status,
+.contact-side-note {
+  color: #57534e;
+}
+
+.form-note,
+.form-status {
+  margin: 0;
+}
+
+.contact-sidecard h3 {
+  max-width: 14ch;
 }
 
 .footer {
@@ -307,6 +440,10 @@ h3 {
   }
 
   .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
