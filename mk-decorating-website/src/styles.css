@@ -375,7 +375,7 @@ h3 {
 .hero-art-copy {
   position: absolute;
   left: 2rem;
-  top: 2rem;
+  top: 5.5rem;
   z-index: 2;
   max-width: 18rem;
 }
@@ -458,8 +458,8 @@ h3 {
 }
 
 .hero-art-note-top {
-  left: 0;
-  top: 16%;
+  left: -1rem;
+  top: 1.5rem;
 }
 
 .hero-art-note-bottom {
