@@ -57,6 +57,48 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section media-section">
+        <div className="container media-layout">
+          <div className="media-copy">
+            <p className="eyebrow">Visual showcase</p>
+            <h2>More imagery, more atmosphere, and a stronger sense of the finished result.</h2>
+            <p className="section-text">
+              The front page now carries more visual weight with a featured media block,
+              supporting image-style panels, and space for future before-and-after or site walkthrough content.
+            </p>
+            <Link to="/projects" className="btn btn-primary">See featured work</Link>
+          </div>
+
+          <div className="media-grid">
+            <article className="media-card media-card-video">
+              <div className="media-screen">
+                <button type="button" className="media-play" aria-label="Play showcase video">
+                  <span></span>
+                </button>
+                <div className="media-overlay">
+                  <p className="media-kicker">Featured walkthrough</p>
+                  <h3>Project storytelling space for short videos, reels, or before-and-after motion clips.</h3>
+                </div>
+              </div>
+            </article>
+
+            <article className="media-card media-card-image media-card-image-a">
+              <div className="media-caption">
+                <p className="media-kicker">Interior finish</p>
+                <strong>Warm, polished, presentation-led spaces.</strong>
+              </div>
+            </article>
+
+            <article className="media-card media-card-image media-card-image-b">
+              <div className="media-caption">
+                <p className="media-kicker">Detail view</p>
+                <strong>Preparation, edges, woodwork, and clean delivery.</strong>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section className="section section-tight">
         <div className="container value-band">
           <div className="value-band-copy">
