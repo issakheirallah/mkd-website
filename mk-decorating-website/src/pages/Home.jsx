@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import LogoMark from '../components/LogoMark'
-import { featuredProjects } from '../content/siteContent'
+import { featuredProjects, testimonials, trustSignals } from '../content/siteContent'
 
 export default function Home() {
   return (
@@ -22,43 +22,35 @@ export default function Home() {
               <Link to="/services" className="btn btn-secondary">Explore services</Link>
             </div>
 
-            <div className="hero-stats">
-              <div className="hero-stat">
-                <strong>Interior decorating</strong>
-                <span>Careful prep, clean lines, premium finish</span>
+            <div className="hero-meta">
+              <div className="hero-meta-item">
+                <span className="hero-meta-label">Focus</span>
+                <strong>Decoration, refurbishment, and maintenance</strong>
               </div>
-              <div className="hero-stat">
-                <strong>Refurbishment support</strong>
-                <span>Refreshes, turnarounds, coordinated works</span>
-              </div>
-              <div className="hero-stat">
-                <strong>Maintenance works</strong>
-                <span>Reliable upkeep for homes and managed properties</span>
+              <div className="hero-meta-item">
+                <span className="hero-meta-label">Standard</span>
+                <strong>Clean prep, clear scope, polished handover</strong>
               </div>
             </div>
           </div>
 
           <div className="hero-stage">
-            <div className="hero-stage-frame">
-              <div className="hero-stage-panel hero-stage-panel-large">
-                <p className="hero-stage-label">Signature approach</p>
-                <h3>Preparation first. Finish second. Presentation throughout.</h3>
-                <p>
-                  The visual language now reflects the brand properly: sharper composition,
-                  stronger contrast, and cleaner hierarchy.
-                </p>
+            <div className="hero-artboard">
+              <div className="hero-art-main">
+                <div className="hero-art-badge">Signature finish</div>
+                <div className="hero-art-copy">
+                  <p className="hero-stage-label">Premium presentation</p>
+                  <h3>One bold composition anchored by the logo, not a stack of generic content cards.</h3>
+                </div>
               </div>
-              <div className="hero-stage-grid">
-                <div className="hero-stage-panel hero-stage-panel-accent">
-                  <span className="hero-chip">Detail-led work</span>
-                  <span className="hero-chip">Tidy delivery</span>
-                  <span className="hero-chip">Residential and commercial</span>
-                </div>
-                <div className="hero-stage-mark">
-                  <div className="hero-stage-mark-shell">
-                    <LogoMark className="hero-stage-logo" />
-                  </div>
-                </div>
+              <div className="hero-art-note hero-art-note-top">
+                <span className="hero-note-kicker">Preparation</span>
+                <strong>Surfaces, protection, and detail work set the finish up properly.</strong>
+              </div>
+
+              <div className="hero-art-note hero-art-note-bottom">
+                <span className="hero-note-kicker">Delivery</span>
+                <strong>Homes, rentals, and client-facing spaces completed with a sharper handover.</strong>
               </div>
             </div>
           </div>
@@ -155,6 +147,49 @@ export default function Home() {
                 <p>The finish is completed properly, the space is left tidy, and the result is ready to present.</p>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section testimonial-section">
+        <div className="container">
+          <div className="section-header">
+            <div>
+              <p className="eyebrow">Client confidence</p>
+              <h2>Trust builds faster when the site shows social proof and clear standards.</h2>
+            </div>
+          </div>
+
+          <div className="testimonial-grid">
+            {testimonials.map((item) => (
+              <article className="testimonial-card" key={`${item.author}-${item.context}`}>
+                <p className="testimonial-quote">“{item.quote}”</p>
+                <p className="testimonial-author">{item.author}</p>
+                <p className="testimonial-context">{item.context}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section trust-section">
+        <div className="container trust-grid">
+          <div className="trust-panel dark-panel">
+            <p className="eyebrow">Working standard</p>
+            <h2>Small trust signals often decide whether someone gets in touch.</h2>
+            <p className="section-text trust-panel-text">
+              The site now communicates a steadier process and better first impression.
+              These final trust cues help convert that interest into enquiries.
+            </p>
+          </div>
+
+          <div className="trust-list">
+            {trustSignals.map((signal) => (
+              <article className="trust-item" key={signal}>
+                <span className="trust-bullet"></span>
+                <p>{signal}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

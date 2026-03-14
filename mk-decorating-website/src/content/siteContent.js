@@ -5,6 +5,34 @@ export const businessInfo = {
   responsePromise: 'Fast replies and clear, written quotes.',
 }
 
+export const trustSignals = [
+  'Residential, rental, and commercial work',
+  'Clear written scopes before work starts',
+  'Tidy preparation and professional handover',
+  'Practical guidance on materials and finish choices',
+]
+
+export const testimonials = [
+  {
+    quote:
+      'The work was organised properly from the start, the finish was sharp, and the house was left clean at the end of each day.',
+    author: 'Homeowner client',
+    context: 'Interior redecoration',
+  },
+  {
+    quote:
+      'Fast turnaround, clear communication, and a noticeably better presentation for the property before new tenants moved in.',
+    author: 'Landlord client',
+    context: 'Rental refresh',
+  },
+  {
+    quote:
+      'The decorating was scheduled around our trading hours and the finished space looked more polished immediately.',
+    author: 'Commercial client',
+    context: 'Office refinish',
+  },
+]
+
 export const featuredProjects = [
   {
     name: 'Victorian Home Redecoration',
