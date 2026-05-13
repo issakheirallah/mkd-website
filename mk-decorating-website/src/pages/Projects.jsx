@@ -1,39 +1,63 @@
-import { featuredProjects } from '../content/siteContent'
+import { Link } from 'react-router-dom'
+import Icon from '../components/Icon'
+
+import wardrobeOpen from '../assets/projects/wardrobe-open.png'
+import wardrobeChandelier from '../assets/projects/wardrobe-chandelier.png'
+import bedroomMattress from '../assets/projects/bedroom-mattress.png'
+import joineryDetail from '../assets/projects/joinery-detail.png'
+import marbleTiling from '../assets/projects/marble-tiling.png'
+import featureWall from '../assets/projects/feature-wall.png'
+import livingRoom from '../assets/projects/living-room.png'
+
+// Order tuned so the 3-col grid fills cleanly (wide=2 cols).
+// Row 1: wide + 1 (3) | Row 2: 1 + 1 + 1 (3) | Row 3: wide + 1 (3)
+const items = [
+  { label: 'Fitted Wardrobes', area: 'Residential', img: wardrobeOpen, wide: true },
+  { label: 'Bespoke Joinery', area: 'Residential', img: joineryDetail },
+  { label: 'Bedroom Refurbishment', area: 'Residential', img: wardrobeChandelier },
+  { label: 'Bathroom Tiling', area: 'Residential', img: marbleTiling },
+  { label: 'Feature Wall', area: 'Interior', img: featureWall },
+  { label: 'Full Property Refurbishment', area: 'Residential', img: bedroomMattress, wide: true },
+  { label: 'Living Room Refresh', area: 'Residential', img: livingRoom },
+]
 
 export default function Projects() {
   return (
-    <section className="section">
-      <div className="container">
-        <p className="eyebrow">Selected work</p>
-        <h1>Project examples built like compact case studies.</h1>
-        <p className="section-text">
-          Each project block is ready to be replaced with live photos later, but the structure
-          now shows scope, location, timing, and outcome instead of placeholder cards.
-        </p>
-
-        <div className="card-grid three">
-          {featuredProjects.map((project) => (
-            <article className="project-card" key={project.name}>
-              <div className={`project-image ${project.accent}`}>
-                <div className="project-badges">
-                  <span>{project.category}</span>
-                  <span>{project.timeframe}</span>
-                </div>
-              </div>
-              <div className="project-body">
-                <p className="project-type">{project.location}</p>
-                <h3>{project.name}</h3>
-                <ul className="project-list">
-                  {project.scope.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <p className="project-result">{project.result}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+    <>
+      <div className="mk-pagehead">
+        <p className="mk-eyebrow">Portfolio</p>
+        <h1>Our Work</h1>
       </div>
-    </section>
+
+      <section className="mk-section mk-section--subtle">
+        <div className="mk-section__inner">
+          <div className="mk-gallery-grid">
+            {items.map((item, i) => (
+              <div
+                key={i}
+                className={`mk-gallery__item mk-gallery__item--photo ${item.wide ? 'mk-gallery__item--wide' : ''}`}
+                style={{ backgroundImage: `url(${item.img})` }}
+              >
+                <div className="mk-gallery__overlay" />
+                <div className="mk-gallery__category">{item.area}</div>
+                <div className="mk-gallery__title">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mk-section mk-section--accent">
+        <div className="mk-cta">
+          <h2 className="mk-cta__title">Ready to transform your space?</h2>
+          <p className="mk-cta__lead">
+            Get a free, no-obligation quote.
+          </p>
+          <Link to="/contact" className="mk-btn mk-btn--navy">
+            Get a Free Quote <Icon name="arrowRight" size={18} />
+          </Link>
+        </div>
+      </section>
+    </>
   )
 }

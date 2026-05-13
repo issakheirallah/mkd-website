@@ -1,19 +1,12 @@
+@import './styles/tokens.css';
+
 :root {
-  --color-primary: #00aeae;
-  --color-primary-deep: #008b8b;
-  --color-secondary: #1d3557;
-  --color-secondary-soft: #48698f;
-  --color-ink: #132238;
-  --color-muted: #5e7187;
-  --color-surface: #f4fbfb;
-  --color-surface-strong: #ffffff;
-  --color-line: #d5e7eb;
-  --shadow-soft: 0 14px 34px rgba(29, 53, 87, 0.08);
-  font-family: "Montserrat", "Segoe UI", sans-serif;
-  color: var(--color-ink);
-  background: var(--color-surface);
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: var(--font-body);
+  color: var(--color-fg);
+  background: var(--color-bg);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-weight-regular);
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -127,7 +120,7 @@ a {
   height: 48px;
   border: 1px solid rgba(29, 53, 87, 0.12);
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   padding: 0;
   cursor: pointer;
 }
@@ -224,24 +217,37 @@ a {
   font-weight: 700;
 }
 
-h1, h2, h3 {
-  line-height: 1.1;
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-navy);
   margin: 0;
 }
 
 h1 {
   font-size: clamp(2.3rem, 5vw, 4.25rem);
   max-width: 12ch;
+  font-weight: var(--font-weight-extrabold);
 }
 
 h2 {
   font-size: clamp(1.9rem, 4vw, 3rem);
   max-width: 18ch;
+  font-weight: var(--font-weight-bold);
 }
 
 h3 {
   font-size: 1.3rem;
   margin-bottom: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: normal;
+}
+
+h4 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: normal;
 }
 
 .lead,
@@ -271,30 +277,45 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.9rem 1.35rem;
-  border-radius: 999px;
-  font-weight: 600;
-  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-bold);
+  font-size: 0.95rem;
+  transition: transform var(--duration-base) var(--ease),
+              background var(--duration-base) var(--ease),
+              box-shadow var(--duration-base) var(--ease),
+              border-color var(--duration-base) var(--ease);
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
-  background: var(--color-primary);
-  color: white;
-  box-shadow: 0 12px 30px rgba(0, 174, 174, 0.22);
+  background: var(--color-teal);
+  color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: var(--color-teal-dark);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-secondary {
-  border: 1px solid rgba(29, 53, 87, 0.12);
-  background: rgba(255, 255, 255, 0.86);
-  color: var(--color-secondary);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-navy);
 }
 
 .btn-secondary:hover {
-  box-shadow: var(--shadow-soft);
+  border-color: var(--color-teal);
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-meta {
@@ -352,7 +373,7 @@ h3 {
   content: "";
   position: absolute;
   inset: 1rem;
-  border-radius: 30px;
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -389,7 +410,7 @@ h3 {
 .hero-art-frame {
   position: absolute;
   inset: 11.5rem 1.8rem 1.8rem 1.8rem;
-  border-radius: 30px;
+  border-radius: var(--radius-2xl);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -397,7 +418,7 @@ h3 {
 
 .hero-art-block {
   position: absolute;
-  border-radius: 30px;
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -451,7 +472,7 @@ h3 {
   z-index: 3;
   width: min(260px, 42%);
   padding: 1rem 1.1rem;
-  border-radius: 22px;
+  border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.86);
   border: 1px solid rgba(255, 255, 255, 0.52);
   box-shadow: var(--shadow-soft);
@@ -495,11 +516,11 @@ h3 {
 .info-card,
 .card,
 .project-card {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--color-line);
-  border-radius: 28px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
   padding: 1.5rem;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-sm);
 }
 
 .info-card.dark,
@@ -512,6 +533,11 @@ h3 {
 .info-card.dark p,
 .dark-panel li {
   color: rgba(232, 244, 247, 0.82);
+}
+
+.info-card.dark h1, .info-card.dark h2, .info-card.dark h3, .info-card.dark h4,
+.dark-panel h1, .dark-panel h2, .dark-panel h3, .dark-panel h4 {
+  color: var(--color-white);
 }
 
 .section {
@@ -550,7 +576,7 @@ h3 {
 .media-card {
   position: relative;
   overflow: hidden;
-  border-radius: 32px;
+  border-radius: var(--radius-2xl);
   min-height: 240px;
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-soft);
@@ -566,7 +592,7 @@ h3 {
 .media-screen {
   position: absolute;
   inset: 1rem;
-  border-radius: 26px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background:
     radial-gradient(circle at 18% 18%, rgba(0, 174, 174, 0.18), transparent 18%),
@@ -628,7 +654,7 @@ h3 {
   right: 1.6rem;
   bottom: 1.6rem;
   padding: 1.4rem;
-  border-radius: 26px;
+  border-radius: var(--radius-xl);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -662,7 +688,7 @@ h3 {
   content: "";
   position: absolute;
   inset: 1rem;
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(29, 53, 87, 0.08);
 }
 
@@ -673,7 +699,7 @@ h3 {
   height: 58%;
   right: 1.2rem;
   bottom: 1.2rem;
-  border-radius: 28px 28px 18px 18px;
+  border-radius: var(--radius-2xl) var(--radius-2xl) var(--radius-md) var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(235, 245, 249, 0.9)),
     linear-gradient(90deg, rgba(29, 53, 87, 0.06), rgba(29, 53, 87, 0));
@@ -704,7 +730,7 @@ h3 {
   bottom: 1.2rem;
   z-index: 1;
   padding: 1rem 1.05rem;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow: 0 18px 28px rgba(29, 53, 87, 0.08);
@@ -743,7 +769,7 @@ h3 {
 }
 
 .value-card {
-  border-radius: 28px;
+  border-radius: var(--radius-2xl);
   padding: 1.4rem;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(239, 252, 252, 0.78));
@@ -772,7 +798,7 @@ h3 {
 
 .showcase-card {
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: var(--radius-2xl);
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-soft);
@@ -822,7 +848,7 @@ h3 {
   gap: 1rem;
   align-items: start;
   padding: 1.35rem 1.5rem;
-  border-radius: 28px;
+  border-radius: var(--radius-2xl);
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-soft);
@@ -980,7 +1006,7 @@ h3 {
   width: 100%;
   border: 1px solid var(--color-line);
   background: rgba(255, 255, 255, 0.94);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   padding: 0.9rem 1rem;
   font: inherit;
   color: var(--color-ink);
@@ -1096,7 +1122,7 @@ h3 {
 
 .testimonial-card {
   padding: 1.5rem;
-  border-radius: 28px;
+  border-radius: var(--radius-2xl);
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-soft);
@@ -1153,7 +1179,7 @@ h3 {
   gap: 1rem;
   align-items: center;
   padding: 1.2rem 1.35rem;
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-soft);
@@ -1231,7 +1257,7 @@ h3 {
     left: 0;
     right: 0;
     padding: 1rem;
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--color-line);
     box-shadow: 0 20px 40px rgba(29, 53, 87, 0.12);
@@ -1246,7 +1272,7 @@ h3 {
 
   .nav-links a {
     padding: 0.9rem 1rem;
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     background: rgba(244, 251, 251, 0.75);
   }
 

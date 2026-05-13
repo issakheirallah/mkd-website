@@ -1,15 +1,31 @@
 export const businessInfo = {
-  phone: 'Add your phone number',
-  email: 'Add your email address',
-  serviceArea: 'Add towns, boroughs, or regions you cover',
+  phone: '077 8891 4110',
+  email: 'info@mkdecorating.net',
+  serviceArea: 'London',
   responsePromise: 'Fast replies and clear, written quotes.',
 }
 
+export const services = [
+  { icon: 'home', title: 'Full Property Refurbishment', desc: 'End-to-end refurbishment — from strip-out and structural works through to the final finish.' },
+  { icon: 'building', title: 'Kitchen & Bathroom Renovation', desc: 'Complete kitchen and bathroom transformations with quality fittings and tiling.' },
+  { icon: 'award', title: 'Fitted Wardrobes & Joinery', desc: 'Bespoke fitted wardrobes, built-in storage, and made-to-measure carpentry.' },
+  { icon: 'check', title: 'Flooring & Tiling', desc: 'Hardwood, laminate, porcelain, and stone — supplied and installed to a clean finish.' },
+  { icon: 'paintBucket', title: 'Plastering & Decorating', desc: 'Skim plastering, painting, and finishing across whole rooms or whole properties.' },
+  { icon: 'clock', title: 'Property Maintenance', desc: 'Ongoing maintenance, repairs, and rapid landlord turnaround works.' },
+]
+
+export const whyUs = [
+  { icon: 'award', title: 'Skilled Multi-Trade Team', desc: 'In-house carpenters, tilers, plasterers, plumbers, electricians and decorators.' },
+  { icon: 'clock', title: 'On-Time Delivery', desc: 'We respect your schedule and plan every project to finish when promised.' },
+  { icon: 'check', title: 'Quality Guaranteed', desc: "Not happy? We'll put it right." },
+  { icon: 'home', title: 'Tidy Site, Clean Handover', desc: 'We protect your property throughout and leave every space spotless on completion.' },
+]
+
 export const trustSignals = [
-  'Residential, rental, and commercial work',
-  'Clear written scopes before work starts',
-  'Tidy preparation and professional handover',
-  'Practical guidance on materials and finish choices',
+  'Full-service renovation: one team, all trades',
+  'Residential, rental, and commercial refurbishment',
+  'Clear written scopes and programmes before work starts',
+  'Practical guidance on materials, fittings, and finishes',
 ]
 
 export const testimonials = [
