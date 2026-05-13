@@ -1,50 +1,57 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import LogoMark from './LogoMark'
-import { siteContent } from '../content/siteContent'
+import Icon from './Icon'
+
+const links = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/services', label: 'Services' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/faq', label: 'FAQ' },
+  { to: '/about', label: 'About' },
+]
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const { businessInfo, navigation } = siteContent
+  const location = useLocation()
 
-  function closeMenu() {
-    setIsOpen(false)
-  }
+  useEffect(() => { setIsOpen(false) }, [location.pathname])
 
   return (
-    <header className="navbar">
-      <div className="container navbar-inner">
-        <Link to="/" className="brand" onClick={closeMenu}>
-          <LogoMark className="brand-logo" />
-          <span className="brand-copy">
-            <span className="brand-title">{businessInfo.companyName}</span>
-            <span className="brand-subtitle">{businessInfo.tagline}</span>
+    <header className="mk-nav">
+      <div className="mk-container mk-nav__inner">
+        <Link to="/" className="mk-nav__brand">
+          <LogoMark className="mk-nav__brand-logo" />
+          <span className="mk-nav__brand-text">
+            <span className="mk-nav__brand-name">MK</span>
+            <span className="mk-nav__brand-tag">Decorating</span>
           </span>
         </Link>
 
         <button
           type="button"
-          className={`nav-toggle ${isOpen ? 'is-open' : ''}`}
+          className="mk-nav__toggle"
           aria-expanded={isOpen}
-          aria-label={navigation.toggleLabel}
-          onClick={() => setIsOpen((current) => !current)}
+          aria-label="Toggle navigation"
+          onClick={() => setIsOpen((v) => !v)}
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <Icon name={isOpen ? 'x' : 'menu'} size={20} />
         </button>
 
-        <nav className={`nav-links ${isOpen ? 'is-open' : ''}`}>
-          {navigation.links.map((link) => (
+        <nav className={`mk-nav__links ${isOpen ? 'is-open' : ''}`}>
+          {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              end={link.to === '/'}
-              onClick={closeMenu}
+              end={link.end}
+              className={({ isActive }) => `mk-nav__link ${isActive ? 'active' : ''}`}
             >
               {link.label}
             </NavLink>
           ))}
+          <Link to="/contact" className="mk-btn mk-btn--primary mk-btn--sm mk-nav__cta">
+            Free Quote
+          </Link>
         </nav>
       </div>
     </header>

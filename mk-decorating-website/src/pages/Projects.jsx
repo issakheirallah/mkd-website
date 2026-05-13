@@ -1,200 +1,63 @@
-import { useEffect, useState } from 'react'
-import { siteContent } from '../content/siteContent'
+import { Link } from 'react-router-dom'
+import Icon from '../components/Icon'
+
+import wardrobeOpen from '../assets/projects/wardrobe-open.png'
+import wardrobeChandelier from '../assets/projects/wardrobe-chandelier.png'
+import bedroomMattress from '../assets/projects/bedroom-mattress.png'
+import joineryDetail from '../assets/projects/joinery-detail.png'
+import marbleTiling from '../assets/projects/marble-tiling.png'
+import featureWall from '../assets/projects/feature-wall.png'
+import livingRoom from '../assets/projects/living-room.png'
+
+// Order tuned so the 3-col grid fills cleanly (wide=2 cols).
+// Row 1: wide + 1 (3) | Row 2: 1 + 1 + 1 (3) | Row 3: wide + 1 (3)
+const items = [
+  { label: 'Fitted Wardrobes', area: 'Residential', img: wardrobeOpen, wide: true },
+  { label: 'Bespoke Joinery', area: 'Residential', img: joineryDetail },
+  { label: 'Bedroom Refurbishment', area: 'Residential', img: wardrobeChandelier },
+  { label: 'Bathroom Tiling', area: 'Residential', img: marbleTiling },
+  { label: 'Feature Wall', area: 'Interior', img: featureWall },
+  { label: 'Full Property Refurbishment', area: 'Residential', img: bedroomMattress, wide: true },
+  { label: 'Living Room Refresh', area: 'Residential', img: livingRoom },
+]
 
 export default function Projects() {
-  const { featuredProjects, projectsPage } = siteContent
-  const [activeGallery, setActiveGallery] = useState(null)
-
-  useEffect(() => {
-    function handleKeydown(event) {
-      if (!activeGallery) return
-
-      if (event.key === 'Escape') {
-        setActiveGallery(null)
-      } else if (event.key === 'ArrowRight') {
-        setActiveGallery((current) => {
-          if (!current) return current
-          return {
-            ...current,
-            index: (current.index + 1) % current.images.length,
-          }
-        })
-      } else if (event.key === 'ArrowLeft') {
-        setActiveGallery((current) => {
-          if (!current) return current
-          return {
-            ...current,
-            index: (current.index - 1 + current.images.length) % current.images.length,
-          }
-        })
-      }
-    }
-
-    window.addEventListener('keydown', handleKeydown)
-    return () => window.removeEventListener('keydown', handleKeydown)
-  }, [activeGallery])
-
-  function openGallery(project, index = 0) {
-    if (!project.images?.length) return
-
-    setActiveGallery({
-      name: project.name,
-      images: project.images,
-      index,
-    })
-  }
-
-  function stepGallery(direction) {
-    setActiveGallery((current) => {
-      if (!current) return current
-      return {
-        ...current,
-        index: (current.index + direction + current.images.length) % current.images.length,
-      }
-    })
-  }
-
   return (
     <>
-      <section className="section">
-        <div className="container">
-          <p className="eyebrow">{projectsPage.eyebrow}</p>
-          <h1>{projectsPage.heading}</h1>
-          <p className="section-text">{projectsPage.body}</p>
+      <div className="mk-pagehead">
+        <p className="mk-eyebrow">Portfolio</p>
+        <h1>Our Work</h1>
+      </div>
 
-          <div className="card-grid three">
-            {featuredProjects.map((project) => (
-              <article className="project-card" key={project.name}>
-                {project.images?.length ? (
-                  <button
-                    type="button"
-                    className="project-image project-image-photo project-image-button"
-                    onClick={() => openGallery(project, 0)}
-                    aria-label={`Open ${project.name} gallery`}
-                  >
-                    <img
-                      src={project.images[0]}
-                      alt={`${project.name} featured view`}
-                      className="project-photo"
-                    />
-                    <div className="project-badges">
-                      <span>{project.category}</span>
-                      <span>{project.timeframe}</span>
-                    </div>
-                    <span className="project-image-cta">View full screen</span>
-                  </button>
-                ) : (
-                  <div className={`project-image ${project.accent}`}>
-                    <div className="project-badges">
-                      <span>{project.category}</span>
-                      <span>{project.timeframe}</span>
-                    </div>
-                  </div>
-                )}
-                <div className="project-body">
-                  <p className="project-type">{project.location}</p>
-                  <h3>{project.name}</h3>
-                  <ul className="project-list">
-                    {project.scope.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                  <p className="project-result">{project.result}</p>
-                  {project.images?.length ? (
-                    <div className="project-thumb-grid">
-                      {project.images.slice(1, 5).map((imagePath, index) => (
-                        <button
-                          type="button"
-                          key={imagePath}
-                          className="project-thumb-button"
-                          onClick={() => openGallery(project, index + 1)}
-                          aria-label={`Open ${project.name} image ${index + 2}`}
-                        >
-                          <img
-                            src={imagePath}
-                            alt={`${project.name} view ${index + 2}`}
-                            className="project-thumb"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </article>
+      <section className="mk-section mk-section--subtle">
+        <div className="mk-section__inner">
+          <div className="mk-gallery-grid">
+            {items.map((item, i) => (
+              <div
+                key={i}
+                className={`mk-gallery__item mk-gallery__item--photo ${item.wide ? 'mk-gallery__item--wide' : ''}`}
+                style={{ backgroundImage: `url(${item.img})` }}
+              >
+                <div className="mk-gallery__overlay" />
+                <div className="mk-gallery__category">{item.area}</div>
+                <div className="mk-gallery__title">{item.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {activeGallery ? (
-        <div
-          className="project-lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activeGallery.name} gallery`}
-          onClick={() => setActiveGallery(null)}
-        >
-          <div className="project-lightbox-panel" onClick={(event) => event.stopPropagation()}>
-            <button
-              type="button"
-              className="project-lightbox-close"
-              onClick={() => setActiveGallery(null)}
-              aria-label="Close gallery"
-            >
-              Close
-            </button>
-
-            <div className="project-lightbox-main">
-              <button
-                type="button"
-                className="project-lightbox-nav"
-                onClick={() => stepGallery(-1)}
-                aria-label="Previous image"
-              >
-                ‹
-              </button>
-
-              <img
-                src={activeGallery.images[activeGallery.index]}
-                alt={`${activeGallery.name} full view ${activeGallery.index + 1}`}
-                className="project-lightbox-image"
-              />
-
-              <button
-                type="button"
-                className="project-lightbox-nav"
-                onClick={() => stepGallery(1)}
-                aria-label="Next image"
-              >
-                ›
-              </button>
-            </div>
-
-            <div className="project-lightbox-meta">
-              <p>{activeGallery.name}</p>
-              <span>{activeGallery.index + 1} / {activeGallery.images.length}</span>
-            </div>
-
-            <div className="project-lightbox-thumbs">
-              {activeGallery.images.map((imagePath, index) => (
-                <button
-                  type="button"
-                  key={imagePath}
-                  className={`project-lightbox-thumb ${index === activeGallery.index ? 'is-active' : ''}`}
-                  onClick={() => setActiveGallery((current) => current ? { ...current, index } : current)}
-                  aria-label={`View image ${index + 1}`}
-                >
-                  <img
-                    src={imagePath}
-                    alt={`${activeGallery.name} thumbnail ${index + 1}`}
-                    className="project-lightbox-thumb-image"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
+      <section className="mk-section mk-section--accent">
+        <div className="mk-cta">
+          <h2 className="mk-cta__title">Ready to transform your space?</h2>
+          <p className="mk-cta__lead">
+            Get a free, no-obligation quote.
+          </p>
+          <Link to="/contact" className="mk-btn mk-btn--navy">
+            Get a Free Quote <Icon name="arrowRight" size={18} />
+          </Link>
         </div>
-      ) : null}
+      </section>
     </>
   )
 }
