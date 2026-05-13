@@ -1,35 +1,22 @@
+import { siteContent } from '../content/siteContent'
+
 export default function Services() {
-  const services = [
-    {
-      title: 'Interior Decorating',
-      description:
-        'High-quality painting, wall finishes, woodwork, and detail-led decorating for homes and commercial spaces.'
-    },
-    {
-      title: 'Refurbishment Works',
-      description:
-        'Practical, reliable refurbishment support for properties that need updating, refreshing, or preparing for sale or let.'
-    },
-    {
-      title: 'Property Maintenance',
-      description:
-        'Ongoing maintenance and repair work delivered with care, clear communication, and a professional finish.'
-    }
-  ]
+  const { servicesPage } = siteContent
 
   return (
-    <section className="section">
-      <div className="container">
-        <p className="eyebrow">Services</p>
-        <h1>Built around presentation, upkeep, and value.</h1>
-        <p className="section-text">
-          Whether you need a property refreshed, restored, or maintained, MK Decorating provides
-          practical support with a professional standard of finish.
-        </p>
+    <section className="section services-page">
+      <div className="container services-page-shell">
+        <div className="services-page-backdrop" aria-hidden="true" />
 
-        <div className="card-grid three">
-          {services.map((service) => (
-            <article className="card" key={service.title}>
+        <div className="services-page-intro">
+          <p className="eyebrow">{servicesPage.eyebrow}</p>
+          <h1>{servicesPage.heading}</h1>
+          <p className="section-text">{servicesPage.body}</p>
+        </div>
+
+        <div className="services-page-grid">
+          {servicesPage.services.map((service) => (
+            <article className="services-page-card" key={service.title}>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
             </article>

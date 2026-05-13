@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MK Decorating</title>
+<style>
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #00aeae; --teal-light: #33c4c4; --teal-dark: #007e7e; --teal-muted: #e0f5f5;
+    --navy: #1d3557; --navy-light: #2d4f7f; --navy-dark: #121f35; --navy-muted: #e8edf4;
+    --grey-50: #f4f6f8; --grey-100: #e8edf2; --grey-200: #d0d9e2; --grey-300: #b0bec8;
+    --grey-400: #8a9aaa; --grey-500: #637282; --grey-700: #354150; --grey-800: #2c3e50;
+    --white: #fff;
+    --font-display: 'Montserrat', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --ease: cubic-bezier(0.4,0,0.2,1);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); color: var(--grey-800); background: var(--white); }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+  button { cursor: pointer; font-family: var(--font-body); border: none; }
+
+  /* Tweaks panel */
+  #tweaks-panel { position: fixed; bottom: 20px; right: 20px; background: white; border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(29,53,87,0.18); padding: 16px 20px; z-index: 9999; display: none; min-width: 200px; }
+  #tweaks-panel h4 { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .tweak-row { margin-bottom: 10px; }
+  .tweak-row label { font-size: 11px; font-weight: 600; color: var(--grey-500); display: block; margin-bottom: 4px; }
+  .tweak-row select, .tweak-row input[type=color] { font-family: var(--font-body); font-size: 12px; border: 1.5px solid var(--grey-200); border-radius: 5px; padding: 4px 8px; width: 100%; }
+  .tweak-row input[type=color] { height: 30px; padding: 2px 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="tweaks-panel">
+  <h4>Tweaks</h4>
+  <div class="tweak-row"><label>Active Screen</label>
+    <select id="tweak-screen">
+      <option value="home">Home</option>
+      <option value="services">Services</option>
+      <option value="contact">Contact</option>
+      <option value="gallery">Gallery</option>
+    </select>
+  </div>
+  <div class="tweak-row"><label>Accent Color</label>
+    <input type="color" id="tweak-accent" value="#00aeae" />
+  </div>
+  <div class="tweak-row"><label>Hero Style</label>
+    <select id="tweak-hero">
+      <option value="light">Light</option>
+      <option value="dark">Dark Navy</option>
+    </select>
+  </div>
+</div>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+// ── Icons (inline SVG) ──────────────────────────────────────────────
+const Icon = ({ name, size = 20, color = 'currentColor', strokeWidth = 1.8 }) => {
+  const icons = {
+    menu: <><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>,
+    x: <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>,
+    check: <polyline points="20 6 9 17 4 12"/>,
+    chevronRight: <polyline points="9 18 15 12 9 6"/>,
+    star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>,
+    phone: <><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.1 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></>,
+    mail: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
+    mapPin: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></>,
+    paintBucket: <><path d="M19 11L7 23 1.5 17.5l12-12"/><path d="M5.5 11.5L11 6"/><path d="M16 10l4.56 4.56a2 2 0 010 2.88L18 20"/><path d="M19.5 21.5a2.5 2.5 0 000-5c-.907 0-1.65.55-2.5 1.5-.85-.95-1.593-1.5-2.5-1.5a2.5 2.5 0 000 5h5z"/></>,
+    home: <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>,
+    building: <><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22V12h6v10"/><path d="M8 7h.01M12 7h.01M16 7h.01M8 12h.01M16 12h.01"/></>,
+    clock: <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>,
+    award: <><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></>,
+    arrowRight: <><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>,
+    instagram: <><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></>,
+    facebook: <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>,
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      {icons[name] || null}
+    </svg>
+  );
+};
+
+// ── Logo ────────────────────────────────────────────────────────────
+const Logo = ({ inverted = false, size = 36 }) => (
+  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+    <img src="../../assets/MKD-LOGO-Transparent.svg" alt="MK"
+      style={{ height: size, width:'auto', filter: inverted ? 'brightness(0) invert(1)' : 'none' }} />
+    <div>
+      <div style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize: size * 0.56,
+        color: inverted ? '#fff' : 'var(--navy)', letterSpacing:'-0.02em', lineHeight:1 }}>MK</div>
+      <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize: size * 0.28,
+        color: inverted ? 'rgba(255,255,255,0.75)' : 'var(--teal)', letterSpacing:'0.1em',
+        textTransform:'uppercase', lineHeight:1.2 }}>Decorating</div>
+    </div>
+  </div>
+);
+
+// ── Nav ─────────────────────────────────────────────────────────────
+const Nav = ({ screen, setScreen }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const links = ['home','services','gallery','contact'];
+
+  return (
+    <nav style={{ position:'sticky', top:0, zIndex:100, background:'white',
+      borderBottom:'1px solid var(--grey-100)', boxShadow:'0 1px 8px rgba(29,53,87,0.06)' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 32px',
+        display:'flex', alignItems:'center', justifyContent:'space-between', height:68 }}>
+        <div style={{ cursor:'pointer' }} onClick={() => setScreen('home')}><Logo /></div>
+        <div style={{ display:'flex', gap:4, alignItems:'center' }}>
+          {links.map(l => (
+            <button key={l} onClick={() => setScreen(l)}
+              style={{ background:'none', padding:'8px 14px', borderRadius:6,
+                fontFamily:'var(--font-body)', fontWeight:600, fontSize:14,
+                color: screen === l ? 'var(--teal)' : 'var(--grey-700)',
+                transition:'color 0.15s', textTransform:'capitalize',
+                borderBottom: screen === l ? '2px solid var(--teal)' : '2px solid transparent' }}>
+              {l}
+            </button>
+          ))}
+          <button onClick={() => setScreen('contact')}
+            style={{ marginLeft:12, background:'var(--teal)', color:'white',
+              padding:'9px 20px', borderRadius:6, fontWeight:600, fontSize:14,
+              transition:'background 0.2s' }}
+            onMouseEnter={e => e.target.style.background='var(--teal-dark)'}
+            onMouseLeave={e => e.target.style.background='var(--teal)'}>
+            Free Quote
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// ── Hero ────────────────────────────────────────────────────────────
+const Hero = ({ setScreen, dark }) => (
+  <section style={{ background: dark ? 'var(--navy)' : 'var(--grey-50)',
+    padding:'96px 32px', position:'relative', overflow:'hidden' }}>
+    {/* Geometric accent */}
+    <div style={{ position:'absolute', right:0, top:0, width:480, height:'100%', overflow:'hidden', opacity:0.06 }}>
+      <div style={{ position:'absolute', right:-80, top:-80, width:400, height:400,
+        background:'var(--teal)', clipPath:'polygon(50% 0%, 0% 100%, 100% 100%)', borderRadius:4 }}/>
+      <div style={{ position:'absolute', right:80, bottom:-60, width:280, height:280,
+        background:'var(--teal)', clipPath:'polygon(50% 0%, 0% 100%, 100% 100%)', borderRadius:4 }}/>
+    </div>
+    <div style={{ maxWidth:1200, margin:'0 auto', display:'grid',
+      gridTemplateColumns:'1fr 1fr', gap:64, alignItems:'center' }}>
+      <div>
+        <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+          letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:16 }}>
+          Professional Decorating
+        </div>
+        <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(2.2rem,4vw,3.5rem)',
+          fontWeight:800, color: dark ? 'white' : 'var(--navy)',
+          lineHeight:1.1, letterSpacing:'-0.025em', marginBottom:24 }}>
+          Your Space,<br/><span style={{ color:'var(--teal)' }}>Reimagined.</span>
+        </h1>
+        <p style={{ fontSize:18, color: dark ? 'rgba(255,255,255,0.72)' : 'var(--grey-500)',
+          lineHeight:1.65, marginBottom:36, maxWidth:480 }}>
+          From feature walls to full room refreshes, MK Decorating brings skill, care, and precision to every project — on time, every time.
+        </p>
+        <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
+          <button onClick={() => setScreen('contact')}
+            style={{ background:'var(--teal)', color:'white', padding:'14px 28px',
+              borderRadius:7, fontWeight:700, fontSize:16, display:'flex', alignItems:'center', gap:8,
+              transition:'background 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.background='var(--teal-dark)'}
+            onMouseLeave={e => e.currentTarget.style.background='var(--teal)'}>
+            Get a Free Quote <Icon name="arrowRight" size={18} />
+          </button>
+          <button onClick={() => setScreen('gallery')}
+            style={{ background:'transparent', color: dark ? 'white' : 'var(--navy)',
+              padding:'14px 28px', borderRadius:7, fontWeight:600, fontSize:16,
+              border:`2px solid ${dark ? 'rgba(255,255,255,0.25)' : 'var(--grey-200)'}`,
+              transition:'border-color 0.2s' }}>
+            See Our Work
+          </button>
+        </div>
+        <div style={{ display:'flex', gap:32, marginTop:40 }}>
+          {[['12+','Years Experience'],['500+','Projects Completed'],['5★','Average Rating']].map(([n,l]) => (
+            <div key={l}>
+              <div style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:800,
+                color:'var(--teal)', lineHeight:1 }}>{n}</div>
+              <div style={{ fontSize:12, color: dark ? 'rgba(255,255,255,0.55)' : 'var(--grey-400)',
+                fontWeight:500, marginTop:3 }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Hero visual — geometric placeholder */}
+      <div style={{ position:'relative', display:'flex', justifyContent:'center' }}>
+        <div style={{ width:440, height:380, borderRadius:16, overflow:'hidden',
+          background: dark ? 'rgba(255,255,255,0.06)' : 'var(--navy-muted)',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          border:`1px solid ${dark ? 'rgba(255,255,255,0.1)' : 'var(--grey-200)'}` }}>
+          <div style={{ textAlign:'center' }}>
+            <img src="../../assets/MKD-LOGO-Transparent.svg" style={{ height:80, margin:'0 auto 16px' }} />
+            <div style={{ fontSize:12, color: dark ? 'rgba(255,255,255,0.4)' : 'var(--grey-400)', letterSpacing:'0.08em' }}>
+              PROJECT IMAGERY
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+// ── Services Section ────────────────────────────────────────────────
+const services = [
+  { icon:'paintBucket', title:'Interior Painting', desc:'Flawless walls, ceilings, and woodwork. Minimal disruption, lasting results.' },
+  { icon:'home', title:'Residential Full Redecorations', desc:'Complete room transformations — from stripping back to the perfect finish.' },
+  { icon:'building', title:'Commercial Spaces', desc:'Offices, retail and hospitality — professional finish delivered on schedule.' },
+  { icon:'award', title:'Feature Walls', desc:'Statement walls with specialist finishes, wallpaper, and textured paint effects.' },
+  { icon:'clock', title:'Wallpaper Hanging', desc:'Expert wallpaper hanging across all types — patterned, textured, bespoke.' },
+  { icon:'check', title:'Colour Consultation', desc:'Unsure what colour? Our experts will guide you to the perfect palette.' },
+];
+
+const ServiceCard = ({ icon, title, desc, onClick }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ background:'white', borderRadius:10, padding:'28px 24px',
+        border:`1px solid ${hovered ? 'var(--teal)' : 'var(--grey-200)'}`,
+        boxShadow: hovered ? '0 8px 32px rgba(29,53,87,0.12)' : '0 2px 8px rgba(29,53,87,0.06)',
+        transform: hovered ? 'translateY(-3px)' : 'none',
+        transition:'all 0.2s var(--ease)', cursor:'pointer' }}>
+      <div style={{ width:44, height:44, borderRadius:10, background: hovered ? 'var(--teal)' : 'var(--teal-muted)',
+        display:'flex', alignItems:'center', justifyContent:'center', marginBottom:16,
+        transition:'background 0.2s' }}>
+        <Icon name={icon} size={20} color={hovered ? 'white' : 'var(--teal-dark)'} />
+      </div>
+      <h3 style={{ fontFamily:'var(--font-display)', fontSize:16, fontWeight:700,
+        color:'var(--navy)', marginBottom:8 }}>{title}</h3>
+      <p style={{ fontSize:13.5, color:'var(--grey-500)', lineHeight:1.6 }}>{desc}</p>
+      <div style={{ marginTop:16, fontSize:13, fontWeight:600, color:'var(--teal)',
+        display:'flex', alignItems:'center', gap:4 }}>
+        Learn more <Icon name="chevronRight" size={14} color="var(--teal)" />
+      </div>
+    </div>
+  );
+};
+
+// ── Testimonials ────────────────────────────────────────────────────
+const testimonials = [
+  { name:'Sarah M.', loc:'Manchester', text:'MK completely transformed our living room. The attention to detail was outstanding — immaculate finish and they left the place spotless.' },
+  { name:'James O.', loc:'Leeds', text:'Hired for our office repaint. On time, professional, and the result was exactly what we wanted. Will definitely use again.' },
+  { name:'Rachel T.', loc:'Sheffield', text:'The feature wall they created is an absolute showstopper. Everyone who visits asks about it. Highly recommend.' },
+];
+
+const TestimonialCard = ({ name, loc, text }) => (
+  <div style={{ background:'white', borderRadius:10, padding:28,
+    boxShadow:'0 2px 12px rgba(29,53,87,0.07)', border:'1px solid var(--grey-100)' }}>
+    <div style={{ display:'flex', gap:3, marginBottom:14 }}>
+      {[...Array(5)].map((_, i) => <Icon key={i} name="star" size={14} color="var(--teal)" strokeWidth={0} />)}
+    </div>
+    <p style={{ fontSize:14.5, color:'var(--grey-700)', lineHeight:1.7, marginBottom:20, fontStyle:'italic' }}>
+      "{text}"
+    </p>
+    <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+      <div style={{ width:36, height:36, borderRadius:'50%', background:'var(--teal)',
+        display:'flex', alignItems:'center', justifyContent:'center',
+        fontFamily:'var(--font-display)', fontWeight:700, fontSize:14, color:'white' }}>
+        {name[0]}
+      </div>
+      <div>
+        <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:13, color:'var(--navy)' }}>{name}</div>
+        <div style={{ fontSize:11, color:'var(--grey-400)' }}>{loc}</div>
+      </div>
+    </div>
+  </div>
+);
+
+// ── Why Choose Us ───────────────────────────────────────────────────
+const WhyUs = () => (
+  <section style={{ background:'var(--navy)', padding:'80px 32px' }}>
+    <div style={{ maxWidth:1200, margin:'0 auto' }}>
+      <div style={{ textAlign:'center', marginBottom:48 }}>
+        <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+          letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:12 }}>
+          Why MK Decorating
+        </div>
+        <h2 style={{ fontFamily:'var(--font-display)', fontSize:'2rem', fontWeight:800,
+          color:'white', letterSpacing:'-0.02em' }}>Precision in every brushstroke.</h2>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:24 }}>
+        {[
+          ['award','Expert Craftspeople','Every decorator is fully trained, insured, and background-checked.'],
+          ['clock','On-Time Delivery','We respect your schedule and guarantee timely project completion.'],
+          ['check','Satisfaction Guaranteed','Not happy? We\'ll return and put it right at no extra cost.'],
+          ['home','Clean & Tidy','We protect your furniture and leave every room spotless on completion.'],
+        ].map(([icon,title,desc]) => (
+          <div key={title} style={{ textAlign:'center', padding:'24px 16px' }}>
+            <div style={{ width:52, height:52, borderRadius:12, background:'rgba(0,174,174,0.15)',
+              display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 16px' }}>
+              <Icon name={icon} size={22} color="var(--teal)" />
+            </div>
+            <h4 style={{ fontFamily:'var(--font-display)', fontSize:15, fontWeight:700,
+              color:'white', marginBottom:8 }}>{title}</h4>
+            <p style={{ fontSize:13, color:'rgba(255,255,255,0.55)', lineHeight:1.65 }}>{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+// ── CTA Banner ──────────────────────────────────────────────────────
+const CTABanner = ({ setScreen }) => (
+  <section style={{ background:'var(--teal)', padding:'64px 32px', textAlign:'center' }}>
+    <div style={{ maxWidth:680, margin:'0 auto' }}>
+      <h2 style={{ fontFamily:'var(--font-display)', fontSize:'2rem', fontWeight:800,
+        color:'white', letterSpacing:'-0.02em', marginBottom:12 }}>
+        Ready to transform your space?
+      </h2>
+      <p style={{ fontSize:16, color:'rgba(255,255,255,0.82)', lineHeight:1.65, marginBottom:32 }}>
+        Get a free, no-obligation quote. We'll come to you, assess the project, and provide a detailed estimate within 24 hours.
+      </p>
+      <button onClick={() => setScreen('contact')}
+        style={{ background:'var(--navy)', color:'white', padding:'14px 32px',
+          borderRadius:7, fontWeight:700, fontSize:16, display:'inline-flex', alignItems:'center', gap:8,
+          transition:'background 0.2s' }}
+        onMouseEnter={e => e.currentTarget.style.background='var(--navy-dark)'}
+        onMouseLeave={e => e.currentTarget.style.background='var(--navy)'}>
+        Get a Free Quote <Icon name="arrowRight" size={18} />
+      </button>
+    </div>
+  </section>
+);
+
+// ── Footer ──────────────────────────────────────────────────────────
+const Footer = ({ setScreen }) => (
+  <footer style={{ background:'var(--navy-dark)', color:'rgba(255,255,255,0.6)', padding:'48px 32px 28px' }}>
+    <div style={{ maxWidth:1200, margin:'0 auto' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
+        <div>
+          <Logo inverted size={32} />
+          <p style={{ fontSize:13, lineHeight:1.7, marginTop:14, maxWidth:260 }}>
+            Professional decorating services across Yorkshire and beyond. Quality craftsmanship, every time.
+          </p>
+          <div style={{ display:'flex', gap:10, marginTop:16 }}>
+            {['instagram','facebook'].map(n => (
+              <div key={n} style={{ width:34, height:34, borderRadius:7, background:'rgba(255,255,255,0.08)',
+                display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+                <Icon name={n} size={16} color="rgba(255,255,255,0.7)" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:12,
+            color:'white', textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:16 }}>Services</div>
+          {['Interior Painting','Feature Walls','Wallpaper Hanging','Commercial','Colour Consultation'].map(s => (
+            <div key={s} style={{ fontSize:13, marginBottom:8, cursor:'pointer', transition:'color 0.15s' }}
+              onMouseEnter={e => e.target.style.color='var(--teal)'}
+              onMouseLeave={e => e.target.style.color='rgba(255,255,255,0.6)'}>{s}</div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:12,
+            color:'white', textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:16 }}>Company</div>
+          {['About Us','Our Work','Testimonials','Blog','Careers'].map(s => (
+            <div key={s} style={{ fontSize:13, marginBottom:8, cursor:'pointer', transition:'color 0.15s' }}
+              onMouseEnter={e => e.target.style.color='var(--teal)'}
+              onMouseLeave={e => e.target.style.color='rgba(255,255,255,0.6)'}>{s}</div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:12,
+            color:'white', textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:16 }}>Contact</div>
+          {[[<Icon name="phone" size={13} />, '0113 000 0000'],[<Icon name="mail" size={13} />, 'hello@mkdecorating.co.uk'],[<Icon name="mapPin" size={13} />, 'Leeds, Yorkshire']].map(([icon,val],i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, marginBottom:10 }}>
+              <span style={{ opacity:0.5 }}>{icon}</span>{val}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ borderTop:'1px solid rgba(255,255,255,0.08)', paddingTop:20,
+        display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:12 }}>
+        <span>© 2025 MK Decorating. All rights reserved.</span>
+        <span>Privacy Policy · Terms</span>
+      </div>
+    </div>
+  </footer>
+);
+
+// ── HOME SCREEN ─────────────────────────────────────────────────────
+const HomeScreen = ({ setScreen, heroStyle }) => (
+  <div>
+    <Hero setScreen={setScreen} dark={heroStyle === 'dark'} />
+    <section style={{ padding:'80px 32px', background:'white' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:48 }}>
+          <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+            letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:12 }}>
+            What We Do
+          </div>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:'2rem', fontWeight:800,
+            color:'var(--navy)', letterSpacing:'-0.02em' }}>Our Services</h2>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+          {services.map(s => <ServiceCard key={s.title} {...s} onClick={() => setScreen('services')} />)}
+        </div>
+      </div>
+    </section>
+    <WhyUs />
+    <section style={{ padding:'80px 32px', background:'var(--grey-50)' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:48 }}>
+          <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+            letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:12 }}>
+            What Our Clients Say
+          </div>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:'2rem', fontWeight:800,
+            color:'var(--navy)', letterSpacing:'-0.02em' }}>Trusted by hundreds.</h2>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+          {testimonials.map(t => <TestimonialCard key={t.name} {...t} />)}
+        </div>
+      </div>
+    </section>
+    <CTABanner setScreen={setScreen} />
+    <Footer setScreen={setScreen} />
+  </div>
+);
+
+// ── SERVICES SCREEN ─────────────────────────────────────────────────
+const ServicesScreen = ({ setScreen }) => (
+  <div>
+    <div style={{ background:'var(--navy)', padding:'64px 32px', textAlign:'center' }}>
+      <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+        letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:12 }}>
+        What We Offer
+      </div>
+      <h1 style={{ fontFamily:'var(--font-display)', fontSize:'2.5rem', fontWeight:800,
+        color:'white', letterSpacing:'-0.025em' }}>Our Services</h1>
+    </div>
+    <section style={{ padding:'64px 32px', background:'white' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24 }}>
+          {services.map(s => <ServiceCard key={s.title} {...s} />)}
+        </div>
+      </div>
+    </section>
+    <CTABanner setScreen={setScreen} />
+    <Footer setScreen={setScreen} />
+  </div>
+);
+
+// ── GALLERY SCREEN ──────────────────────────────────────────────────
+const GalleryScreen = ({ setScreen }) => {
+  const items = [
+    { label:'Living Room Refresh', area:'Residential', col:'var(--navy)', w:2 },
+    { label:'Feature Wall', area:'Interior', col:'var(--teal)', w:1 },
+    { label:'Office Repaint', area:'Commercial', col:'var(--navy-light)', w:1 },
+    { label:'Kitchen Cabinets', area:'Residential', col:'var(--teal-dark)', w:1 },
+    { label:'Master Bedroom', area:'Residential', col:'var(--navy)', w:2 },
+    { label:'Restaurant Walls', area:'Commercial', col:'var(--teal)', w:1 },
+  ];
+  return (
+    <div>
+      <div style={{ background:'var(--navy)', padding:'64px 32px', textAlign:'center' }}>
+        <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+          letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:12 }}>
+          Portfolio
+        </div>
+        <h1 style={{ fontFamily:'var(--font-display)', fontSize:'2.5rem', fontWeight:800,
+          color:'white', letterSpacing:'-0.025em' }}>Our Work</h1>
+      </div>
+      <section style={{ padding:'64px 32px', background:'var(--grey-50)' }}>
+        <div style={{ maxWidth:1200, margin:'0 auto' }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16 }}>
+            {items.map((item, i) => (
+              <div key={i} style={{ gridColumn: item.w === 2 ? 'span 2' : 'span 1',
+                background: item.col, borderRadius:10, height:200,
+                display:'flex', flexDirection:'column', justifyContent:'flex-end',
+                padding:'20px 24px', cursor:'pointer', position:'relative', overflow:'hidden',
+                transition:'transform 0.2s', boxShadow:'var(--shadow-md)' }}
+                onMouseEnter={e => e.currentTarget.style.transform='scale(1.01)'}
+                onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}>
+                <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-60%)', opacity:0.1 }}>
+                  <img src="../../assets/MKD-LOGO-Transparent.svg" style={{ height:80, filter:'brightness(0) invert(1)' }} />
+                </div>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:11, fontWeight:600,
+                  letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.6)', marginBottom:4 }}>
+                  {item.area}
+                </div>
+                <div style={{ fontFamily:'var(--font-display)', fontSize:17, fontWeight:700, color:'white' }}>
+                  {item.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <CTABanner setScreen={setScreen} />
+      <Footer setScreen={setScreen} />
+    </div>
+  );
+};
+
+// ── CONTACT SCREEN ──────────────────────────────────────────────────
+const ContactScreen = () => {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ first:'', last:'', email:'', phone:'', service:'Interior Painting', message:'' });
+  const fieldStyle = { width:'100%', fontFamily:'var(--font-body)', fontSize:14,
+    color:'var(--grey-800)', background:'white', border:'1.5px solid var(--grey-200)',
+    borderRadius:6, padding:'10px 14px', outline:'none', transition:'border-color 0.2s' };
+
+  return (
+    <div>
+      <div style={{ background:'var(--navy)', padding:'64px 32px', textAlign:'center' }}>
+        <div style={{ fontFamily:'var(--font-body)', fontWeight:600, fontSize:12,
+          letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--teal)', marginBottom:12 }}>
+          Get In Touch
+        </div>
+        <h1 style={{ fontFamily:'var(--font-display)', fontSize:'2.5rem', fontWeight:800,
+          color:'white', letterSpacing:'-0.025em' }}>Free Quote</h1>
+      </div>
+      <section style={{ padding:'64px 32px', background:'var(--grey-50)' }}>
+        <div style={{ maxWidth:1000, margin:'0 auto', display:'grid',
+          gridTemplateColumns:'5fr 4fr', gap:48, alignItems:'start' }}>
+          <div style={{ background:'white', borderRadius:12, padding:'40px',
+            boxShadow:'0 4px 24px rgba(29,53,87,0.08)' }}>
+            {submitted ? (
+              <div style={{ textAlign:'center', padding:'40px 0' }}>
+                <div style={{ width:60, height:60, borderRadius:'50%', background:'var(--teal-muted)',
+                  display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 20px' }}>
+                  <Icon name="check" size={28} color="var(--teal)" strokeWidth={2.5} />
+                </div>
+                <h3 style={{ fontFamily:'var(--font-display)', fontSize:22, fontWeight:800,
+                  color:'var(--navy)', marginBottom:10 }}>Quote Request Sent!</h3>
+                <p style={{ fontSize:14, color:'var(--grey-500)', lineHeight:1.7 }}>
+                  We'll be in touch within 24 hours to arrange your free on-site assessment.
+                </p>
+                <button onClick={() => setSubmitted(false)}
+                  style={{ marginTop:24, background:'var(--teal)', color:'white', padding:'10px 24px',
+                    borderRadius:6, fontWeight:600, fontSize:14 }}>
+                  Send Another
+                </button>
+              </div>
+            ) : (
+              <>
+                <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, fontWeight:800,
+                  color:'var(--navy)', marginBottom:6 }}>Request a Free Quote</h2>
+                <p style={{ fontSize:13.5, color:'var(--grey-500)', marginBottom:28, lineHeight:1.6 }}>
+                  Fill in your details and we'll get back to you within 24 hours.
+                </p>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:14 }}>
+                  <div>
+                    <label style={{ display:'block', fontSize:12, fontWeight:600, color:'var(--navy)', marginBottom:5 }}>First Name</label>
+                    <input style={fieldStyle} placeholder="Jane" value={form.first}
+                      onChange={e => setForm({...form, first:e.target.value})}
+                      onFocus={e => e.target.style.borderColor='var(--teal)'}
+                      onBlur={e => e.target.style.borderColor='var(--grey-200)'} />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontSize:12, fontWeight:600, color:'var(--navy)', marginBottom:5 }}>Last Name</label>
+                    <input style={fieldStyle} placeholder="Smith" value={form.last}
+                      onChange={e => setForm({...form, last:e.target.value})}
+                      onFocus={e => e.target.style.borderColor='var(--teal)'}
+                      onBlur={e => e.target.style.borderColor='var(--grey-200)'} />
+                  </div>
+                </div>
+                {[['Email','email','jane@example.com','email'],['Phone','tel','+44 7700 900 000','phone']].map(([lbl,type,ph,key]) => (
+                  <div key={key} style={{ marginBottom:14 }}>
+                    <label style={{ display:'block', fontSize:12, fontWeight:600, color:'var(--navy)', marginBottom:5 }}>{lbl}</label>
+                    <input type={type} style={fieldStyle} placeholder={ph} value={form[key]}
+                      onChange={e => setForm({...form, [key]:e.target.value})}
+                      onFocus={e => e.target.style.borderColor='var(--teal)'}
+                      onBlur={e => e.target.style.borderColor='var(--grey-200)'} />
+                  </div>
+                ))}
+                <div style={{ marginBottom:14 }}>
+                  <label style={{ display:'block', fontSize:12, fontWeight:600, color:'var(--navy)', marginBottom:5 }}>Service Required</label>
+                  <select style={{...fieldStyle}} value={form.service} onChange={e => setForm({...form, service:e.target.value})}>
+                    {['Interior Painting','Feature Wall','Full Redecoration','Wallpaper Hanging','Commercial','Colour Consultation'].map(s => <option key={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div style={{ marginBottom:24 }}>
+                  <label style={{ display:'block', fontSize:12, fontWeight:600, color:'var(--navy)', marginBottom:5 }}>Message</label>
+                  <textarea style={{...fieldStyle, resize:'vertical', minHeight:96}} placeholder="Tell us about your project…"
+                    value={form.message} onChange={e => setForm({...form, message:e.target.value})}
+                    onFocus={e => e.target.style.borderColor='var(--teal)'}
+                    onBlur={e => e.target.style.borderColor='var(--grey-200)'}/>
+                </div>
+                <button onClick={() => setSubmitted(true)}
+                  style={{ width:'100%', background:'var(--teal)', color:'white', padding:'13px 24px',
+                    borderRadius:7, fontWeight:700, fontSize:15, transition:'background 0.2s', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}
+                  onMouseEnter={e => e.currentTarget.style.background='var(--teal-dark)'}
+                  onMouseLeave={e => e.currentTarget.style.background='var(--teal)'}>
+                  Send Quote Request <Icon name="arrowRight" size={18} />
+                </button>
+              </>
+            )}
+          </div>
+          <div>
+            <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:800,
+              color:'var(--navy)', marginBottom:20 }}>Get in touch</h3>
+            {[[<Icon name="phone" size={18} />, 'Phone', '0113 000 0000'],
+              [<Icon name="mail" size={18} />, 'Email', 'hello@mkdecorating.co.uk'],
+              [<Icon name="mapPin" size={18} />, 'Based in', 'Leeds, Yorkshire']].map(([icon, label, val], i) => (
+              <div key={i} style={{ display:'flex', gap:14, marginBottom:20, alignItems:'flex-start' }}>
+                <div style={{ width:40, height:40, borderRadius:9, background:'var(--teal-muted)',
+                  display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  {React.cloneElement(icon, { color:'var(--teal)' })}
+                </div>
+                <div>
+                  <div style={{ fontSize:11, fontWeight:600, color:'var(--grey-400)', letterSpacing:'0.05em', textTransform:'uppercase' }}>{label}</div>
+                  <div style={{ fontSize:14, color:'var(--navy)', fontWeight:500, marginTop:2 }}>{val}</div>
+                </div>
+              </div>
+            ))}
+            <div style={{ marginTop:32, background:'var(--navy)', borderRadius:10, padding:'20px 24px' }}>
+              <div style={{ fontFamily:'var(--font-display)', fontSize:14, fontWeight:700, color:'white', marginBottom:8 }}>
+                Free on-site assessment
+              </div>
+              <p style={{ fontSize:12.5, color:'rgba(255,255,255,0.6)', lineHeight:1.65 }}>
+                We come to you, assess the project, and provide a detailed written quote — completely free, no obligation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// ── APP ─────────────────────────────────────────────────────────────
+const App = () => {
+  const [screen, setScreen] = useState(() => localStorage.getItem('mk-screen') || 'home');
+  const [heroStyle, setHeroStyle] = useState('light');
+
+  useEffect(() => { localStorage.setItem('mk-screen', screen); }, [screen]);
+
+  // Tweaks wiring
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
+      if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+    document.getElementById('tweak-screen')?.addEventListener('change', e => setScreen(e.target.value));
+    document.getElementById('tweak-accent')?.addEventListener('input', e => {
+      document.documentElement.style.setProperty('--teal', e.target.value);
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: e.target.value } }, '*');
+    });
+    document.getElementById('tweak-hero')?.addEventListener('change', e => {
+      setHeroStyle(e.target.value);
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { heroStyle: e.target.value } }, '*');
+    });
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  // Sync tweak screen select
+  useEffect(() => {
+    const sel = document.getElementById('tweak-screen');
+    if (sel) sel.value = screen;
+  }, [screen]);
+
+  const screens = { home: HomeScreen, services: ServicesScreen, gallery: GalleryScreen, contact: ContactScreen };
+  const Screen = screens[screen] || HomeScreen;
+
+  return (
+    <div>
+      <Nav screen={screen} setScreen={setScreen} />
+      <Screen setScreen={setScreen} heroStyle={heroStyle} />
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

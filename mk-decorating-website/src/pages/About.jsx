@@ -1,27 +1,25 @@
+import { siteContent } from '../content/siteContent'
+
 export default function About() {
+  const { aboutPage } = siteContent
+
   return (
     <section className="section">
       <div className="container two-column">
         <div>
-          <p className="eyebrow">About</p>
-          <h1>A trusted partner for homeowners, landlords, and businesses.</h1>
-          <p className="section-text">
-            MK Decorating focuses on neat execution, dependable service, and work that genuinely
-            improves the feel and presentation of a property.
-          </p>
-          <p className="section-text">
-            This version of the site is built to present the business with a more premium and
-            credible image, with room to expand into testimonials, service-area pages, and a gallery.
-          </p>
+          <p className="eyebrow">{aboutPage.eyebrow}</p>
+          <h1>{aboutPage.heading}</h1>
+          {aboutPage.paragraphs.map((paragraph) => (
+            <p className="section-text" key={paragraph}>{paragraph}</p>
+          ))}
         </div>
 
         <aside className="card dark-panel">
-          <h3>Why clients choose MK Decorating</h3>
+          <h3>{aboutPage.sidebar.heading}</h3>
           <ul className="clean-list">
-            <li>Professional and polished presentation</li>
-            <li>Suitable for residential and commercial clients</li>
-            <li>Clear, reassuring messaging that builds trust</li>
-            <li>Strong foundation for future SEO and lead generation</li>
+            {aboutPage.sidebar.items.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </aside>
       </div>

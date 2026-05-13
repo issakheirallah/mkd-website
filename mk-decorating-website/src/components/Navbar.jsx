@@ -1,9 +1,11 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import LogoMark from './LogoMark'
+import { siteContent } from '../content/siteContent'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { businessInfo, navigation } = siteContent
 
   function closeMenu() {
     setIsOpen(false)
@@ -15,8 +17,8 @@ export default function Navbar() {
         <Link to="/" className="brand" onClick={closeMenu}>
           <LogoMark className="brand-logo" />
           <span className="brand-copy">
-            <span className="brand-title">MK Decorating</span>
-            <span className="brand-subtitle">Refurbishment & Maintenance</span>
+            <span className="brand-title">{businessInfo.companyName}</span>
+            <span className="brand-subtitle">{businessInfo.tagline}</span>
           </span>
         </Link>
 
@@ -24,7 +26,7 @@ export default function Navbar() {
           type="button"
           className={`nav-toggle ${isOpen ? 'is-open' : ''}`}
           aria-expanded={isOpen}
-          aria-label="Toggle navigation menu"
+          aria-label={navigation.toggleLabel}
           onClick={() => setIsOpen((current) => !current)}
         >
           <span></span>
@@ -33,12 +35,16 @@ export default function Navbar() {
         </button>
 
         <nav className={`nav-links ${isOpen ? 'is-open' : ''}`}>
-          <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
-          <NavLink to="/services" onClick={closeMenu}>Services</NavLink>
-          <NavLink to="/projects" onClick={closeMenu}>Projects</NavLink>
-          <NavLink to="/faq" onClick={closeMenu}>FAQ</NavLink>
-          <NavLink to="/about" onClick={closeMenu}>About</NavLink>
-          <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
+          {navigation.links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === '/'}
+              onClick={closeMenu}
+            >
+              {link.label}
+            </NavLink>
+          ))}
         </nav>
       </div>
     </header>

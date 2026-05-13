@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { businessInfo } from '../content/siteContent'
+import { siteContent } from '../content/siteContent'
 
 const initialForm = {
   name: '',
@@ -13,6 +13,7 @@ const initialForm = {
 }
 
 export default function Contact() {
+  const { businessInfo, contactPage } = siteContent
   const [formData, setFormData] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('')
@@ -27,10 +28,10 @@ export default function Contact() {
   function validateForm() {
     const nextErrors = {}
 
-    if (!formData.name.trim()) nextErrors.name = 'Name is required.'
-    if (!formData.email.trim()) nextErrors.email = 'Email is required.'
-    if (!formData.service) nextErrors.service = 'Select the service you need.'
-    if (!formData.details.trim()) nextErrors.details = 'Add a short project summary.'
+    if (!formData.name.trim()) nextErrors.name = contactPage.form.errors.name
+    if (!formData.email.trim()) nextErrors.email = contactPage.form.errors.email
+    if (!formData.service) nextErrors.service = contactPage.form.errors.service
+    if (!formData.details.trim()) nextErrors.details = contactPage.form.errors.details
 
     return nextErrors
   }
@@ -42,33 +43,33 @@ export default function Contact() {
     setErrors(nextErrors)
 
     if (Object.keys(nextErrors).length > 0) {
-      setStatus('Please complete the required fields before sending your request.')
+      setStatus(contactPage.form.errors.incomplete)
       return
     }
 
     if (!hasConfiguredEmail) {
-      setStatus('Update the business email in site content before enabling email-based quote requests.')
+      setStatus(contactPage.form.errors.missingEmail)
       return
     }
 
-    const subject = encodeURIComponent(`Quote request from ${formData.name}`)
+    const subject = encodeURIComponent(`${contactPage.form.mailto.subjectPrefix} ${formData.name}`)
     const body = encodeURIComponent(
       [
-        `Name: ${formData.name}`,
-        `Email: ${formData.email}`,
-        `Phone: ${formData.phone || 'Not provided'}`,
-        `Property type: ${formData.propertyType || 'Not provided'}`,
-        `Service needed: ${formData.service}`,
-        `Postcode / area: ${formData.postcode || 'Not provided'}`,
-        `Preferred timeline: ${formData.timeline || 'Not provided'}`,
+        `${contactPage.form.mailto.labels.name}: ${formData.name}`,
+        `${contactPage.form.mailto.labels.email}: ${formData.email}`,
+        `${contactPage.form.mailto.labels.phone}: ${formData.phone || contactPage.form.mailto.emptyValue}`,
+        `${contactPage.form.mailto.labels.propertyType}: ${formData.propertyType || contactPage.form.mailto.emptyValue}`,
+        `${contactPage.form.mailto.labels.service}: ${formData.service}`,
+        `${contactPage.form.mailto.labels.postcode}: ${formData.postcode || contactPage.form.mailto.emptyValue}`,
+        `${contactPage.form.mailto.labels.timeline}: ${formData.timeline || contactPage.form.mailto.emptyValue}`,
         '',
-        'Project details:',
+        contactPage.form.mailto.labels.projectDetails,
         formData.details,
       ].join('\n')
     )
 
     window.location.href = `mailto:${businessInfo.email}?subject=${subject}&body=${body}`
-    setStatus('Your email draft is ready. Send it from your mail app to submit the quote request.')
+    setStatus(contactPage.form.errors.ready)
     setFormData(initialForm)
   }
 
@@ -76,58 +77,54 @@ export default function Contact() {
     <section className="section">
       <div className="container two-column">
         <div>
-          <p className="eyebrow">Contact</p>
-          <h1>Ready to discuss your project?</h1>
-          <p className="section-text">
-            Use the form to collect the exact details needed for a quote, or contact MK Decorating
-            directly using the details alongside it.
-          </p>
+          <p className="eyebrow">{contactPage.eyebrow}</p>
+          <h1>{contactPage.heading}</h1>
+          <p className="section-text">{contactPage.intro}</p>
 
           <form className="quote-form card" onSubmit={handleSubmit}>
             <div className="form-grid">
               <label>
-                Full name
+                {contactPage.form.labels.name}
                 <input name="name" value={formData.name} onChange={updateField} />
                 {errors.name ? <span className="field-error">{errors.name}</span> : null}
               </label>
               <label>
-                Email address
+                {contactPage.form.labels.email}
                 <input name="email" type="email" value={formData.email} onChange={updateField} />
                 {errors.email ? <span className="field-error">{errors.email}</span> : null}
               </label>
               <label>
-                Phone number
+                {contactPage.form.labels.phone}
                 <input name="phone" value={formData.phone} onChange={updateField} />
               </label>
               <label>
-                Property type
+                {contactPage.form.labels.propertyType}
                 <select name="propertyType" value={formData.propertyType} onChange={updateField}>
-                  <option value="">Select</option>
-                  <option value="Home">Home</option>
-                  <option value="Rental property">Rental property</option>
-                  <option value="Office">Office</option>
-                  <option value="Retail / commercial">Retail / commercial</option>
+                  <option value="">{contactPage.form.placeholders.select}</option>
+                  {contactPage.form.options.propertyTypes.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
                 </select>
               </label>
               <label>
-                Service needed
+                {contactPage.form.labels.service}
                 <select name="service" value={formData.service} onChange={updateField}>
-                  <option value="">Select</option>
-                  <option value="Interior decorating">Interior decorating</option>
-                  <option value="Refurbishment works">Refurbishment works</option>
-                  <option value="Property maintenance">Property maintenance</option>
+                  <option value="">{contactPage.form.placeholders.select}</option>
+                  {contactPage.form.options.services.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
                 </select>
                 {errors.service ? <span className="field-error">{errors.service}</span> : null}
               </label>
               <label>
-                Postcode or area
+                {contactPage.form.labels.postcode}
                 <input name="postcode" value={formData.postcode} onChange={updateField} />
               </label>
               <label>
-                Preferred timeline
+                {contactPage.form.labels.timeline}
                 <input
                   name="timeline"
-                  placeholder="e.g. Next month"
+                  placeholder={contactPage.form.placeholders.timeline}
                   value={formData.timeline}
                   onChange={updateField}
                 />
@@ -135,11 +132,11 @@ export default function Contact() {
             </div>
 
             <label>
-              Project details
+              {contactPage.form.labels.details}
               <textarea
                 name="details"
                 rows="6"
-                placeholder="Tell us what needs decorating, the number of rooms, access constraints, and any deadlines."
+                placeholder={contactPage.form.placeholders.details}
                 value={formData.details}
                 onChange={updateField}
               />
@@ -147,10 +144,8 @@ export default function Contact() {
             </label>
 
             <div className="form-actions">
-              <button type="submit" className="btn btn-primary">Create quote email</button>
-              <p className="form-note">
-                This version opens your mail app with the quote details pre-filled.
-              </p>
+              <button type="submit" className="btn btn-primary">{contactPage.form.submitLabel}</button>
+              <p className="form-note">{contactPage.form.note}</p>
             </div>
 
             {status ? <p className="form-status">{status}</p> : null}
@@ -159,29 +154,28 @@ export default function Contact() {
 
         <aside className="contact-sidebar">
           <div className="card dark-panel">
-            <h3>Direct contact</h3>
+            <h3>{contactPage.directContact.heading}</h3>
             <div className="contact-block">
-              <strong>Phone</strong>
+              <strong>{contactPage.directContact.phoneLabel}</strong>
               <p>{businessInfo.phone}</p>
             </div>
             <div className="contact-block">
-              <strong>Email</strong>
+              <strong>{contactPage.directContact.emailLabel}</strong>
               <p>{businessInfo.email}</p>
             </div>
             <div className="contact-block">
-              <strong>Service area</strong>
+              <strong>{contactPage.directContact.serviceAreaLabel}</strong>
               <p>{businessInfo.serviceArea}</p>
             </div>
           </div>
 
           <div className="card contact-sidecard">
-            <p className="eyebrow">What helps</p>
-            <h3>Send enough detail for a faster quote.</h3>
+            <p className="eyebrow">{contactPage.helpCard.eyebrow}</p>
+            <h3>{contactPage.helpCard.heading}</h3>
             <ul className="clean-list">
-              <li>Approximate room count or property size</li>
-              <li>Photos of the current condition</li>
-              <li>Your preferred dates and access times</li>
-              <li>Whether materials need to be supplied</li>
+              {contactPage.helpCard.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
             <p className="contact-side-note">{businessInfo.responsePromise}</p>
           </div>
