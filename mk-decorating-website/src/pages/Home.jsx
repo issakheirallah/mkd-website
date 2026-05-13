@@ -21,7 +21,7 @@ export default function Home() {
               <span className="mk-hero__title-accent">Reimagined.</span>
             </h1>
             <p className="mk-hero__lead">
-              MK Decorating deliver full-service property renovation — from kitchens and bathrooms to fitted joinery, flooring, and finishing. One team, start to finish.
+              MK Decorating delivers full-service property renovation, from kitchens and bathrooms to fitted joinery, flooring, and finishing. One team from start to finish.
             </p>
             <div className="mk-hero__actions">
               <Link to="/contact" className="mk-btn mk-btn--primary">
