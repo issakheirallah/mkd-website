@@ -292,6 +292,111 @@ body {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* ── Hero carousel ─────────────────────────────────── */
+.mk-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  outline: none;
+}
+
+.mk-carousel:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 174, 174, 0.4);
+}
+
+.mk-carousel__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 600ms var(--ease);
+  will-change: transform;
+}
+
+.mk-carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mk-carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mk-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  color: var(--color-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--duration-fast) var(--ease), transform var(--duration-fast) var(--ease);
+  z-index: 2;
+}
+
+.mk-carousel__arrow:hover {
+  background: var(--color-white);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.mk-carousel__arrow:active { transform: translateY(-50%) scale(0.95); }
+
+.mk-carousel__arrow--prev {
+  left: 12px;
+  transform: translateY(-50%) rotate(180deg);
+}
+.mk-carousel__arrow--prev:hover { transform: translateY(-50%) rotate(180deg) scale(1.05); }
+.mk-carousel__arrow--prev:active { transform: translateY(-50%) rotate(180deg) scale(0.95); }
+
+.mk-carousel__arrow--next { right: 12px; }
+
+.mk-carousel__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 30, 50, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+.mk-carousel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease), width var(--duration-base) var(--ease);
+}
+
+.mk-carousel__dot:hover { background: rgba(255, 255, 255, 0.85); }
+
+.mk-carousel__dot.is-active {
+  background: var(--color-white);
+  width: 22px;
+  border-radius: var(--radius-full);
+}
+
 .mk-hero__visual-inner--photo {
   background: var(--color-grey-100);
   padding: 0;
