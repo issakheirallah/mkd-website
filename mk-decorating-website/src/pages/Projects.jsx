@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
 
-import wardrobeOpen from '../assets/projects/wardrobe-open.png'
-import wardrobeChandelier from '../assets/projects/wardrobe-chandelier.png'
-import bedroomMattress from '../assets/projects/bedroom-mattress.png'
-import joineryDetail from '../assets/projects/joinery-detail.png'
-import marbleTiling from '../assets/projects/marble-tiling.png'
-import featureWall from '../assets/projects/feature-wall.png'
-import livingRoom from '../assets/projects/living-room.png'
+import wardrobeOpen from '../assets/projects/wardrobe-open.jpeg'
+import wardrobeChandelier from '../assets/projects/wardrobe-chandelier.jpeg'
+import bedroomMattress from '../assets/projects/bedroom-mattress.jpeg'
+import joineryDetail from '../assets/projects/joinery-detail.jpeg'
+import marbleTiling from '../assets/projects/marble-tiling.jpeg'
+import featureWall from '../assets/projects/feature-wall.jpeg'
+import livingRoom from '../assets/projects/living-room.jpeg'
 
 // Order tuned so the 3-col grid fills cleanly (wide=2 cols).
 // Row 1: wide + 1 (3) | Row 2: 1 + 1 + 1 (3) | Row 3: wide + 1 (3)

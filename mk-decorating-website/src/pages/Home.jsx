@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
+import HeroCarousel from '../components/HeroCarousel'
 import { services, whyUs, testimonials } from '../content/siteContent'
-import heroImage from '../assets/projects/wardrobe-open.png'
+
+const heroCarouselImages = [
+  '/projects/project-002/project-002-01.jpeg',
+  '/projects/project-002/project-002-02.jpeg',
+  '/projects/project-002/project-002-03.jpeg',
+  '/projects/project-002/project-002-04.jpeg',
+  '/projects/project-002/project-002-05.jpeg',
+  '/projects/project-002/project-002-06.jpeg',
+]
 
 export default function Home() {
   return (
@@ -32,7 +41,7 @@ export default function Home() {
           </div>
           <div className="mk-hero__visual">
             <div className="mk-hero__visual-inner mk-hero__visual-inner--photo">
-              <img src={heroImage} alt="Bespoke fitted wardrobe project by MK Decorating" />
+              <HeroCarousel images={heroCarouselImages} alt="MK Decorating project photo" />
             </div>
           </div>
         </div>
