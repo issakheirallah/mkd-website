@@ -1,0 +1,17 @@
+{
+  "name": "MK Decorating",
+  "short_name": "MK Decorating",
+  "description": "Renovation, refurbishment, and maintenance across London.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d3557",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

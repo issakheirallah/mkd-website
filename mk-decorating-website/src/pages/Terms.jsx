@@ -1,4 +1,11 @@
+import usePageMeta from '../hooks/usePageMeta'
+
 export default function Terms() {
+  usePageMeta({
+    title: 'Terms of Service | MK Decorating',
+    description: 'The terms under which MK Decorating provides renovation, refurbishment, and maintenance services.',
+    path: '/terms',
+  })
   return (
     <>
       <div className="mk-pagehead">
@@ -82,16 +89,21 @@ export default function Terms() {
             <li>Any changes to the schedule will be communicated promptly.</li>
           </ul>
 
-          <h2>6. Materials &amp; Warranty</h2>
+          <h2>6. Materials &amp; Workmanship</h2>
           <ul>
-            <li>MK Decorating uses high-quality materials and workmanship to ensure durability.</li>
+            <li>MK Decorating aims to use quality materials and workmanship suited to each project.</li>
             <li>
               If materials are supplied by the client, MK Decorating is not responsible for their
               quality or performance.
             </li>
             <li>
-              Workmanship is guaranteed for 5 years unless otherwise agreed per job, excluding
-              damage caused by external factors (e.g., water leaks, accidents).
+              Any specific workmanship cover, guarantees, or warranties — including duration and
+              scope — are agreed in writing on a per-project basis and set out in the individual
+              quotation or contract. Cover does not extend to damage caused by external factors
+              (e.g., water leaks, third-party works, accidents, or normal wear and tear).
+            </li>
+            <li>
+              Nothing in these Terms affects your statutory consumer rights.
             </li>
           </ul>
 

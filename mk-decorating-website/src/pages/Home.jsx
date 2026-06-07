@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
 import HeroCarousel from '../components/HeroCarousel'
+import usePageMeta from '../hooks/usePageMeta'
 import { services, whyUs, testimonials } from '../content/siteContent'
 
 const heroCarouselImages = [
@@ -13,6 +14,7 @@ const heroCarouselImages = [
 ]
 
 export default function Home() {
+  usePageMeta({ path: '/' })
   return (
     <>
       {/* Hero */}
@@ -56,7 +58,7 @@ export default function Home() {
           </div>
           <div className="mk-services-grid">
             {services.map((s) => (
-              <Link to="/services" key={s.title} className="mk-service-card">
+              <Link to={`/services/${s.slug}`} key={s.slug} className="mk-service-card">
                 <div className="mk-service-card__icon">
                   <Icon name={s.icon} size={20} color="currentColor" />
                 </div>
@@ -67,6 +69,30 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Areas covered */}
+      <section className="mk-section mk-section--subtle mk-areas-section">
+        <div className="mk-section__inner">
+          <div className="mk-areas">
+            <div className="mk-areas__copy">
+              <p className="mk-eyebrow">Areas Covered</p>
+              <h2 className="mk-areas__title">Working across London.</h2>
+              <p className="mk-areas__lead">
+                We deliver projects right across the capital — homes, rentals, and commercial
+                spaces in every quarter of the city.
+              </p>
+            </div>
+            <div className="mk-areas__grid">
+              {['Central London', 'North London', 'West London', 'South London', 'East London', 'Greater London'].map((area) => (
+                <div key={area} className="mk-areas__chip">
+                  <Icon name="mapPin" size={14} />
+                  <span>{area}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

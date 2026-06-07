@@ -1,5 +1,7 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
+import usePageMeta from '../hooks/usePageMeta'
 
 import wardrobeOpen from '../assets/projects/wardrobe-open.jpeg'
 import wardrobeChandelier from '../assets/projects/wardrobe-chandelier.jpeg'
@@ -22,6 +24,17 @@ const items = [
 ]
 
 export default function Projects() {
+  usePageMeta({
+    title: 'Our Work | MK Decorating',
+    description: 'A selection of recent renovation and refurbishment projects in London — fitted wardrobes, bespoke joinery, bathrooms, bedrooms, and feature walls.',
+    path: '/projects',
+  })
+
+  const categories = useMemo(() => ['All', ...Array.from(new Set(items.map((i) => i.area)))], [])
+  const [filter, setFilter] = useState('All')
+
+  const filtered = filter === 'All' ? items : items.filter((i) => i.area === filter)
+
   return (
     <>
       <div className="mk-pagehead">
@@ -31,11 +44,26 @@ export default function Projects() {
 
       <section className="mk-section mk-section--subtle">
         <div className="mk-section__inner">
+          <div className="mk-filter" role="tablist" aria-label="Filter projects by category">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                aria-selected={filter === cat}
+                className={`mk-filter__pill ${filter === cat ? 'is-active' : ''}`}
+                onClick={() => setFilter(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
           <div className="mk-gallery-grid">
-            {items.map((item, i) => (
+            {filtered.map((item, i) => (
               <div
-                key={i}
-                className={`mk-gallery__item mk-gallery__item--photo ${item.wide ? 'mk-gallery__item--wide' : ''}`}
+                key={`${item.label}-${i}`}
+                className={`mk-gallery__item mk-gallery__item--photo ${item.wide && filter === 'All' ? 'mk-gallery__item--wide' : ''}`}
                 style={{ backgroundImage: `url(${item.img})` }}
               >
                 <div className="mk-gallery__overlay" />

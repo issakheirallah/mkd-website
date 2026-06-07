@@ -12,7 +12,7 @@ const faqs = [
   {
     question: 'How long will the work take?',
     answer:
-      'Timing depends on the scale and complexity of the project, the trades involved, lead times on materials, and access. A single-room refresh may take days, while a full-property refurbishment is scheduled across a longer programme. Expected timing is set out clearly during quoting and tracked against a written programme.',
+      "Timing depends on the scale and complexity of the project, the trades involved, lead times on materials, and access. A single-room refresh may take days, while a full-property refurbishment is scheduled across a longer programme. An indicative timing is discussed during quoting — exact dates are agreed on a case-by-case basis and may be affected by materials, weather, or scope changes.",
   },
   {
     question: 'Do you supply materials and fittings?',
@@ -26,7 +26,14 @@ const faqs = [
   },
 ]
 
+import usePageMeta from '../hooks/usePageMeta'
+
 export default function Faq() {
+  usePageMeta({
+    title: 'FAQ | MK Decorating',
+    description: 'Common questions about MK Decorating renovation and refurbishment work — pricing, trades, timing, materials, and what to expect on a project.',
+    path: '/faq',
+  })
   return (
     <>
       <div className="mk-pagehead">

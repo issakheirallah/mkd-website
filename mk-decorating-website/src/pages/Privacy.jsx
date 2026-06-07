@@ -1,4 +1,11 @@
+import usePageMeta from '../hooks/usePageMeta'
+
 export default function Privacy() {
+  usePageMeta({
+    title: 'Privacy Policy | MK Decorating',
+    description: 'How MK Decorating collects, uses, and protects your personal information under the UK GDPR.',
+    path: '/privacy',
+  })
   return (
     <>
       <div className="mk-pagehead">

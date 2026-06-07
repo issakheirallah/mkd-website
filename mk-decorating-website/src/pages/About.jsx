@@ -1,4 +1,11 @@
+import usePageMeta from '../hooks/usePageMeta'
+
 export default function About() {
+  usePageMeta({
+    title: 'About | MK Decorating',
+    description: 'MK Decorating is a multi-trade renovation and refurbishment company based in London with over 20 years of industry experience.',
+    path: '/about',
+  })
   return (
     <>
       <div className="mk-pagehead">
