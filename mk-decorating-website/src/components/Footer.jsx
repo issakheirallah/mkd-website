@@ -4,12 +4,12 @@ import Icon from './Icon'
 import { businessInfo } from '../content/siteContent'
 
 const serviceLinks = [
-  'Full Property Refurbishment',
-  'Kitchen & Bathroom Renovation',
-  'Fitted Wardrobes & Joinery',
-  'Flooring & Tiling',
-  'Plastering & Decorating',
-  'Property Maintenance',
+  { label: 'Full Property Refurbishment', slug: 'full-property-refurbishment' },
+  { label: 'Kitchen & Bathroom Renovation', slug: 'kitchen-bathroom-renovation' },
+  { label: 'Fitted Wardrobes & Joinery', slug: 'fitted-wardrobes-joinery' },
+  { label: 'Flooring & Tiling', slug: 'flooring-tiling' },
+  { label: 'Plastering & Decorating', slug: 'plastering-decorating' },
+  { label: 'Property Maintenance', slug: 'property-maintenance' },
 ]
 
 const companyLinks = [
@@ -49,7 +49,7 @@ export default function Footer() {
           <div>
             <div className="mk-footer__col-title">Services</div>
             {serviceLinks.map((s) => (
-              <Link key={s} to="/services" className="mk-footer__link">{s}</Link>
+              <Link key={s.slug} to={`/services/${s.slug}`} className="mk-footer__link">{s.label}</Link>
             ))}
           </div>
 
@@ -62,12 +62,12 @@ export default function Footer() {
 
           <div>
             <div className="mk-footer__col-title">Contact</div>
-            <div className="mk-footer__contact-row">
+            <a href={businessInfo.phoneHref} className="mk-footer__contact-row mk-footer__contact-link">
               <span><Icon name="phone" size={13} /></span>{businessInfo.phone}
-            </div>
-            <div className="mk-footer__contact-row">
+            </a>
+            <a href={businessInfo.emailHref} className="mk-footer__contact-row mk-footer__contact-link">
               <span><Icon name="mail" size={13} /></span>{businessInfo.email}
-            </div>
+            </a>
             <div className="mk-footer__contact-row">
               <span><Icon name="mapPin" size={13} /></span>{businessInfo.serviceArea}
             </div>

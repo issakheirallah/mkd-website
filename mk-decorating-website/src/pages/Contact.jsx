@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import Icon from '../components/Icon'
+import usePageMeta from '../hooks/usePageMeta'
 import { businessInfo } from '../content/siteContent'
+
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT
 
 const initialForm = {
   first: '',
@@ -22,19 +25,33 @@ const serviceOptions = [
 ]
 
 export default function Contact() {
+  usePageMeta({
+    title: 'Free Quote | MK Decorating',
+    description: 'Request a free, no-obligation quote for renovation, refurbishment, or maintenance work across London.',
+    path: '/contact',
+  })
+
   const [form, setForm] = useState(initialForm)
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
   const [errors, setErrors] = useState({})
-
-  const hasConfiguredEmail = !businessInfo.email.toLowerCase().includes('add your')
 
   function update(e) {
     const { name, value } = e.target
     setForm((f) => ({ ...f, [name]: value }))
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
+
+    // Honeypot: if a (hidden) field that humans cannot see has been filled,
+    // silently bail and show the success state. Real visitors never see this.
+    if (e.target.elements.website?.value) {
+      setSubmitted(true)
+      return
+    }
+
     const errs = {}
     if (!form.first.trim()) errs.first = 'Required'
     if (!form.last.trim()) errs.last = 'Required'
@@ -43,19 +60,46 @@ export default function Contact() {
     setErrors(errs)
     if (Object.keys(errs).length) return
 
-    if (hasConfiguredEmail) {
-      const subject = encodeURIComponent(`Quote request from ${form.first} ${form.last}`)
-      const body = encodeURIComponent([
-        `Name: ${form.first} ${form.last}`,
-        `Email: ${form.email}`,
-        `Phone: ${form.phone || 'Not provided'}`,
-        `Service: ${form.service}`,
-        '',
-        'Message:',
-        form.message,
-      ].join('\n'))
-      window.location.href = `mailto:${businessInfo.email}?subject=${subject}&body=${body}`
+    setSubmitError(null)
+
+    // Preferred path: post to Formspree if configured
+    if (FORMSPREE_ENDPOINT) {
+      try {
+        setSending(true)
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            name: `${form.first} ${form.last}`,
+            email: form.email,
+            phone: form.phone || 'Not provided',
+            service: form.service,
+            message: form.message,
+            _subject: `Quote request from ${form.first} ${form.last}`,
+          }),
+        })
+        if (!res.ok) throw new Error(`Form submission failed (${res.status})`)
+        setSubmitted(true)
+      } catch (err) {
+        setSubmitError(err.message || 'Something went wrong. Please try again or call us directly.')
+      } finally {
+        setSending(false)
+      }
+      return
     }
+
+    // Fallback: open the user's mail client with a prefilled email
+    const subject = encodeURIComponent(`Quote request from ${form.first} ${form.last}`)
+    const body = encodeURIComponent([
+      `Name: ${form.first} ${form.last}`,
+      `Email: ${form.email}`,
+      `Phone: ${form.phone || 'Not provided'}`,
+      `Service: ${form.service}`,
+      '',
+      'Message:',
+      form.message,
+    ].join('\n'))
+    window.location.href = `mailto:${businessInfo.email}?subject=${subject}&body=${body}`
     setSubmitted(true)
   }
 
@@ -85,6 +129,14 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate>
+                {/* Honeypot — invisible to humans, irresistible to bots */}
+                <div className="mk-honeypot" aria-hidden="true">
+                  <label>
+                    Website (do not fill)
+                    <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+                  </label>
+                </div>
+
                 <h2>Request a Free Quote</h2>
                 <p className="mk-form-card__lead">
                   Fill in your details and we'll get back to you within 24 hours.
@@ -142,9 +194,20 @@ export default function Contact() {
                   {errors.message && <span className="field-error">{errors.message}</span>}
                 </div>
 
-                <button type="submit" className="mk-btn mk-btn--primary mk-form-submit">
-                  Send Quote Request <Icon name="arrowRight" size={18} />
+                <button
+                  type="submit"
+                  className="mk-btn mk-btn--primary mk-form-submit"
+                  disabled={sending}
+                >
+                  {sending ? 'Sending…' : <>Send Quote Request <Icon name="arrowRight" size={18} /></>}
                 </button>
+                {submitError && (
+                  <p className="mk-form-error" role="alert">
+                    {submitError} You can also{' '}
+                    <a href={businessInfo.phoneHref}>call us</a> or{' '}
+                    <a href={businessInfo.emailHref}>send us an email</a>.
+                  </p>
+                )}
               </form>
             )}
           </div>
@@ -152,21 +215,21 @@ export default function Contact() {
           <aside className="mk-contact-aside">
             <h3>Get in touch</h3>
 
-            <div className="mk-contact-aside__row">
+            <a href={businessInfo.phoneHref} className="mk-contact-aside__row mk-contact-aside__row--link">
               <div className="mk-contact-aside__ico"><Icon name="phone" size={18} color="currentColor" /></div>
               <div>
                 <div className="mk-contact-aside__label">Phone</div>
                 <div className="mk-contact-aside__value">{businessInfo.phone}</div>
               </div>
-            </div>
+            </a>
 
-            <div className="mk-contact-aside__row">
+<a href={businessInfo.emailHref} className="mk-contact-aside__row mk-contact-aside__row--link">
               <div className="mk-contact-aside__ico"><Icon name="mail" size={18} color="currentColor" /></div>
               <div>
                 <div className="mk-contact-aside__label">Email</div>
                 <div className="mk-contact-aside__value">{businessInfo.email}</div>
               </div>
-            </div>
+            </a>
 
             <div className="mk-contact-aside__row">
               <div className="mk-contact-aside__ico"><Icon name="mapPin" size={18} color="currentColor" /></div>

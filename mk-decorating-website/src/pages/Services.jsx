@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
-import { services } from '../content/siteContent'
+import usePageMeta from '../hooks/usePageMeta'
+import { projectDisclaimer, services } from '../content/siteContent'
 
 export default function Services() {
+  usePageMeta({
+    title: 'Services | MK Decorating',
+    description: 'Full-service renovation and refurbishment across London — kitchens, bathrooms, fitted wardrobes, joinery, flooring, tiling, plastering, and decorating.',
+    path: '/services',
+  })
   return (
     <>
       <div className="mk-pagehead">
@@ -12,16 +18,17 @@ export default function Services() {
 
       <section className="mk-section">
         <div className="mk-section__inner">
+          <p className="mk-services-disclaimer">{projectDisclaimer}</p>
           <div className="mk-services-grid">
             {services.map((s) => (
-              <Link to="/contact" key={s.title} className="mk-service-card">
+              <Link to={`/services/${s.slug}`} key={s.slug} className="mk-service-card">
                 <div className="mk-service-card__icon">
                   <Icon name={s.icon} size={20} color="currentColor" />
                 </div>
                 <h3 className="mk-service-card__title">{s.title}</h3>
                 <p className="mk-service-card__desc">{s.desc}</p>
                 <div className="mk-service-card__link">
-                  Request a quote <Icon name="chevronRight" size={14} />
+                  Learn more <Icon name="chevronRight" size={14} />
                 </div>
               </Link>
             ))}
