@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Lightbox from 'yet-another-react-lightbox'
+import 'yet-another-react-lightbox/styles.css'
 import Icon from '../components/Icon'
+import FadeIn from '../components/FadeIn'
 import usePageMeta from '../hooks/usePageMeta'
 
 import wardrobeOpen from '../assets/projects/wardrobe-open.jpeg'
@@ -32,8 +35,16 @@ export default function Projects() {
 
   const categories = useMemo(() => ['All', ...Array.from(new Set(items.map((i) => i.area)))], [])
   const [filter, setFilter] = useState('All')
+  const [openIndex, setOpenIndex] = useState(-1)
 
   const filtered = filter === 'All' ? items : items.filter((i) => i.area === filter)
+
+  const slides = filtered.map((item) => ({
+    src: item.img,
+    alt: item.label,
+    title: item.label,
+    description: item.area,
+  }))
 
   return (
     <>
@@ -44,36 +55,56 @@ export default function Projects() {
 
       <section className="mk-section mk-section--subtle">
         <div className="mk-section__inner">
-          <div className="mk-filter" role="tablist" aria-label="Filter projects by category">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                role="tab"
-                aria-selected={filter === cat}
-                className={`mk-filter__pill ${filter === cat ? 'is-active' : ''}`}
-                onClick={() => setFilter(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          <FadeIn>
+            <div className="mk-filter" role="tablist" aria-label="Filter projects by category">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  role="tab"
+                  aria-selected={filter === cat}
+                  className={`mk-filter__pill ${filter === cat ? 'is-active' : ''}`}
+                  onClick={() => setFilter(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </FadeIn>
 
           <div className="mk-gallery-grid">
             {filtered.map((item, i) => (
-              <div
-                key={`${item.label}-${i}`}
-                className={`mk-gallery__item mk-gallery__item--photo ${item.wide && filter === 'All' ? 'mk-gallery__item--wide' : ''}`}
-                style={{ backgroundImage: `url(${item.img})` }}
-              >
-                <div className="mk-gallery__overlay" />
-                <div className="mk-gallery__category">{item.area}</div>
-                <div className="mk-gallery__title">{item.label}</div>
-              </div>
+              <FadeIn key={`${item.label}-${i}`} delay={i * 0.05}>
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(i)}
+                  className={`mk-gallery__item mk-gallery__item--photo ${item.wide && filter === 'All' ? 'mk-gallery__item--wide' : ''}`}
+                  style={{ backgroundImage: `url(${item.img})` }}
+                  aria-label={`Open ${item.label} in lightbox`}
+                >
+                  <div className="mk-gallery__overlay" />
+                  <div className="mk-gallery__category">{item.area}</div>
+                  <div className="mk-gallery__title">{item.label}</div>
+                  <div className="mk-gallery__zoom" aria-hidden="true">
+                    <Icon name="chevronRight" size={16} />
+                  </div>
+                </button>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
+
+      <Lightbox
+        open={openIndex >= 0}
+        close={() => setOpenIndex(-1)}
+        index={openIndex < 0 ? 0 : openIndex}
+        slides={slides}
+        controller={{ closeOnBackdropClick: true }}
+        styles={{
+          container: { backgroundColor: 'rgba(15, 30, 50, 0.94)' },
+        }}
+      />
 
       <section className="mk-section mk-section--accent">
         <div className="mk-cta">
