@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="_shared.css" />
+  <style>
+    .card { background: var(--grey-50); padding: 88px 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+    .top { display: flex; align-items: center; gap: 14px; }
+    .brand { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--navy); letter-spacing: -0.02em; }
+    .middle { position: relative; z-index: 2; max-width: 16ch; }
+    .eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 24px; }
+    .headline { font-family: var(--font-display); font-weight: 800; font-size: 88px; color: var(--navy); letter-spacing: -0.025em; line-height: 1.02; }
+    .accent { color: var(--teal); }
+    .footer { display: flex; justify-content: space-between; align-items: end; padding-top: 28px; border-top: 1px solid var(--grey-200); font-family: var(--font-body); font-weight: 600; font-size: 16px; color: var(--grey-700); position: relative; z-index: 2; }
+    .footer .url { color: var(--teal-dark); }
+    .accents { position: absolute; right: -120px; top: 240px; width: 540px; height: 540px; opacity: 0.06; pointer-events: none; }
+    .tri { position: absolute; background: var(--teal); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); border-radius: 6px; }
+    .tri-1 { right: 0; top: 0; width: 360px; height: 320px; }
+    .tri-2 { right: 200px; top: 220px; width: 240px; height: 220px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="accents">
+      <div class="tri tri-1"></div>
+      <div class="tri tri-2"></div>
+    </div>
+    <div class="top">
+      <svg width="42" height="24" viewBox="0 0 144 82" aria-hidden="true">
+        <polygon points="0.816 80.973 72 80.973 36.406 18.688" fill="#00aeae" />
+        <polygon points="72 80.973 143.184 80.973 107.594 18.688" fill="#00aeae" />
+        <polygon points="36.305 1.027 107.59 1.027 72 63.313" fill="#1d3557" />
+      </svg>
+      <span class="brand">MK Decorating</span>
+    </div>
+    <div class="middle">
+      <div class="eyebrow">Quality renovation</div>
+      <div class="headline">One team. <span class="accent">Every</span> trade. <span class="accent">One</span> finish.</div>
+    </div>
+    <div class="footer">
+      <span class="url">mkdecorating.net</span>
+      <span>London</span>
+    </div>
+  </div>
+</body>
+</html>

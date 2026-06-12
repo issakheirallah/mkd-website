@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
 import HeroCarousel from '../components/HeroCarousel'
+import FadeIn from '../components/FadeIn'
+import BeforeAfter from '../components/BeforeAfter'
 import usePageMeta from '../hooks/usePageMeta'
 import { services, whyUs, testimonials } from '../content/siteContent'
+
+// Before/after pairs live in /public/projects/before-after/
+const beforeAfterPair = {
+  before: '/projects/before-after/pair-01-before.jpeg',
+  after: '/projects/before-after/pair-01-after.jpeg',
+}
 
 const heroCarouselImages = [
   '/projects/project-002/project-002-01.jpeg',
@@ -25,49 +33,61 @@ export default function Home() {
         </div>
         <div className="mk-hero__grid">
           <div>
-            <p className="mk-eyebrow">Renovation & Refurbishment</p>
-            <h1 className="mk-hero__title">
-              Your Space,
-              <br />
-              <span className="mk-hero__title-accent">Reimagined.</span>
-            </h1>
-            <p className="mk-hero__lead">
-              MK Decorating delivers full-service property renovation, from kitchens and bathrooms to fitted joinery, flooring, and finishing. One team from start to finish.
-            </p>
-            <div className="mk-hero__actions">
-              <Link to="/contact" className="mk-btn mk-btn--primary">
-                Get a Free Quote <Icon name="arrowRight" size={18} />
-              </Link>
-              <Link to="/projects" className="mk-btn mk-btn--ghost">See Our Work</Link>
-            </div>
+            <FadeIn y={16} delay={0.05}>
+              <p className="mk-eyebrow">Renovation & Refurbishment</p>
+            </FadeIn>
+            <FadeIn y={20} delay={0.15}>
+              <h1 className="mk-hero__title">
+                Your Space,
+                <br />
+                <span className="mk-hero__title-accent">Reimagined.</span>
+              </h1>
+            </FadeIn>
+            <FadeIn y={16} delay={0.3}>
+              <p className="mk-hero__lead">
+                MK Decorating delivers full-service property renovation, from kitchens and bathrooms to fitted joinery, flooring, and finishing. One team from start to finish.
+              </p>
+            </FadeIn>
+            <FadeIn y={12} delay={0.4}>
+              <div className="mk-hero__actions">
+                <Link to="/contact" className="mk-btn mk-btn--primary">
+                  Get a Free Quote <Icon name="arrowRight" size={18} />
+                </Link>
+                <Link to="/projects" className="mk-btn mk-btn--ghost">See Our Work</Link>
+              </div>
+            </FadeIn>
           </div>
-          <div className="mk-hero__visual">
+          <FadeIn y={24} delay={0.2} className="mk-hero__visual">
             <div className="mk-hero__visual-inner mk-hero__visual-inner--photo">
               <HeroCarousel images={heroCarouselImages} alt="MK Decorating project photo" />
             </div>
-          </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* Services */}
       <section className="mk-section">
         <div className="mk-section__inner">
-          <div className="mk-section__header">
-            <p className="mk-eyebrow">What We Do</p>
-            <h2 className="mk-section__title">Our Services</h2>
-          </div>
+          <FadeIn>
+            <div className="mk-section__header">
+              <p className="mk-eyebrow">What We Do</p>
+              <h2 className="mk-section__title">Our Services</h2>
+            </div>
+          </FadeIn>
           <div className="mk-services-grid">
-            {services.map((s) => (
-              <Link to={`/services/${s.slug}`} key={s.slug} className="mk-service-card">
-                <div className="mk-service-card__icon">
-                  <Icon name={s.icon} size={20} color="currentColor" />
-                </div>
-                <h3 className="mk-service-card__title">{s.title}</h3>
-                <p className="mk-service-card__desc">{s.desc}</p>
-                <div className="mk-service-card__link">
-                  Learn more <Icon name="chevronRight" size={14} />
-                </div>
-              </Link>
+            {services.map((s, i) => (
+              <FadeIn key={s.slug} delay={i * 0.07}>
+                <Link to={`/services/${s.slug}`} className="mk-service-card">
+                  <div className="mk-service-card__icon">
+                    <Icon name={s.icon} size={20} color="currentColor" />
+                  </div>
+                  <h3 className="mk-service-card__title">{s.title}</h3>
+                  <p className="mk-service-card__desc">{s.desc}</p>
+                  <div className="mk-service-card__link">
+                    Learn more <Icon name="chevronRight" size={14} />
+                  </div>
+                </Link>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -77,42 +97,74 @@ export default function Home() {
       <section className="mk-section mk-section--subtle mk-areas-section">
         <div className="mk-section__inner">
           <div className="mk-areas">
-            <div className="mk-areas__copy">
+            <FadeIn className="mk-areas__copy">
               <p className="mk-eyebrow">Areas Covered</p>
               <h2 className="mk-areas__title">Working across London.</h2>
               <p className="mk-areas__lead">
                 We deliver projects right across the capital — homes, rentals, and commercial
                 spaces in every quarter of the city.
               </p>
-            </div>
+            </FadeIn>
             <div className="mk-areas__grid">
-              {['Central London', 'North London', 'West London', 'South London', 'East London', 'Greater London'].map((area) => (
-                <div key={area} className="mk-areas__chip">
-                  <Icon name="mapPin" size={14} />
-                  <span>{area}</span>
-                </div>
+              {['Central London', 'North London', 'West London', 'South London', 'East London', 'Greater London'].map((area, i) => (
+                <FadeIn key={area} delay={0.1 + i * 0.05}>
+                  <div className="mk-areas__chip">
+                    <Icon name="mapPin" size={14} />
+                    <span>{area}</span>
+                  </div>
+                </FadeIn>
               ))}
             </div>
           </div>
         </div>
       </section>
 
+      {/* Before / After */}
+      <section className="mk-section">
+        <div className="mk-section__inner">
+          <FadeIn>
+            <div className="mk-section__header">
+              <p className="mk-eyebrow">See the Difference</p>
+              <h2 className="mk-section__title">Before &amp; after.</h2>
+            </div>
+          </FadeIn>
+          <FadeIn>
+            <BeforeAfter
+              before={beforeAfterPair.before}
+              after={beforeAfterPair.after}
+              beforeAlt="Room before the MK Decorating refurbishment"
+              afterAlt="Room after the MK Decorating refurbishment"
+              beforeObjectPosition="center 85%"
+            />
+          </FadeIn>
+          <FadeIn>
+            <p className="mk-beforeafter__caption">
+              Drag the slider to reveal the transformation.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* Why Us */}
       <section className="mk-section mk-section--dark">
         <div className="mk-section__inner">
-          <div className="mk-section__header">
-            <p className="mk-eyebrow">Why MK Decorating</p>
-            <h2 className="mk-section__title">Precision at every stage of the build.</h2>
-          </div>
+          <FadeIn>
+            <div className="mk-section__header">
+              <p className="mk-eyebrow">Why MK Decorating</p>
+              <h2 className="mk-section__title">Precision at every stage of the build.</h2>
+            </div>
+          </FadeIn>
           <div className="mk-why__grid">
-            {whyUs.map((w) => (
-              <div key={w.title} className="mk-why__item">
-                <div className="mk-why__icon">
-                  <Icon name={w.icon} size={22} color="currentColor" />
+            {whyUs.map((w, i) => (
+              <FadeIn key={w.title} delay={i * 0.08}>
+                <div className="mk-why__item">
+                  <div className="mk-why__icon">
+                    <Icon name={w.icon} size={22} color="currentColor" />
+                  </div>
+                  <h4 className="mk-why__title">{w.title}</h4>
+                  <p className="mk-why__desc">{w.desc}</p>
                 </div>
-                <h4 className="mk-why__title">{w.title}</h4>
-                <p className="mk-why__desc">{w.desc}</p>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -150,7 +202,7 @@ export default function Home() {
 
       {/* CTA */}
       <section className="mk-section mk-section--accent">
-        <div className="mk-cta">
+        <FadeIn className="mk-cta">
           <h2 className="mk-cta__title">Ready to transform your space?</h2>
           <p className="mk-cta__lead">
             Get a free, no-obligation quote. We'll come to you, assess the project, and provide a detailed estimate.
@@ -158,7 +210,7 @@ export default function Home() {
           <Link to="/contact" className="mk-btn mk-btn--navy">
             Get a Free Quote <Icon name="arrowRight" size={18} />
           </Link>
-        </div>
+        </FadeIn>
       </section>
     </>
   )

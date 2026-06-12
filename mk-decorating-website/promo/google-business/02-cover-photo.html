@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="_shared.css" />
+  <style>
+    .card { background: var(--navy); color: var(--white); padding: 72px 96px; display: flex; align-items: center; }
+    .copy { position: relative; z-index: 2; }
+    .eyebrow { font-size: 16px; color: var(--teal); margin-bottom: 24px; }
+    .headline { font-size: 84px; color: var(--white); margin-bottom: 28px; max-width: 12ch; }
+    .accent { color: var(--teal); }
+    .body { font-size: 22px; color: rgba(255,255,255,0.72); max-width: 540px; }
+    .logo { position: absolute; top: 56px; right: 96px; display: flex; align-items: center; gap: 18px; }
+    .logo .name { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--white); letter-spacing: -0.02em; }
+    .accents { position: absolute; right: 0; bottom: 0; width: 540px; height: 540px; pointer-events: none; opacity: 0.14; }
+    .tri { position: absolute; background: var(--teal); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); border-radius: 6px; }
+    .tri-1 { right: -60px; top: 80px; width: 360px; height: 320px; }
+    .tri-2 { right: 140px; bottom: -60px; width: 240px; height: 220px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <svg width="48" height="28" viewBox="0 0 144 82" aria-hidden="true">
+        <polygon points="0.816 80.973 72 80.973 36.406 18.688" fill="#00aeae" />
+        <polygon points="72 80.973 143.184 80.973 107.594 18.688" fill="#00aeae" />
+        <polygon points="36.305 1.027 107.59 1.027 72 63.313" fill="#ffffff" />
+      </svg>
+      <span class="name">MK Decorating</span>
+    </div>
+    <div class="accents">
+      <div class="tri tri-1"></div>
+      <div class="tri tri-2"></div>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Renovation · Refurbishment · Maintenance</div>
+      <div class="headline">Your space, <span class="accent">reimagined.</span></div>
+      <div class="body">Full-service property renovation across London. One team, all trades, start to finish.</div>
+    </div>
+  </div>
+</body>
+</html>

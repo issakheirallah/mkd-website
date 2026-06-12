@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import Icon from '../components/Icon'
+import FadeIn from '../components/FadeIn'
 import usePageMeta from '../hooks/usePageMeta'
 import { getServiceBySlug, projectDisclaimer, services } from '../content/siteContent'
 
@@ -61,7 +62,7 @@ export default function ServiceDetail() {
 
       <section className="mk-section">
         <div className="mk-section__inner mk-service-detail">
-          <div className="mk-service-detail__grid">
+          <FadeIn className="mk-service-detail__grid">
             <div className="mk-service-detail__main">
               <p className="mk-service-detail__lead">{service.intro}</p>
 
@@ -115,7 +116,7 @@ export default function ServiceDetail() {
                 </Link>
               </div>
             </aside>
-          </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -126,17 +127,19 @@ export default function ServiceDetail() {
             <h2 className="mk-section__title">Other ways we can help</h2>
           </div>
           <div className="mk-services-grid">
-            {related.map((s) => (
-              <Link to={`/services/${s.slug}`} key={s.slug} className="mk-service-card">
-                <div className="mk-service-card__icon">
-                  <Icon name={s.icon} size={20} color="currentColor" />
-                </div>
-                <h3 className="mk-service-card__title">{s.title}</h3>
-                <p className="mk-service-card__desc">{s.desc}</p>
-                <div className="mk-service-card__link">
-                  Learn more <Icon name="chevronRight" size={14} />
-                </div>
-              </Link>
+            {related.map((s, i) => (
+              <FadeIn key={s.slug} delay={i * 0.07}>
+                <Link to={`/services/${s.slug}`} className="mk-service-card">
+                  <div className="mk-service-card__icon">
+                    <Icon name={s.icon} size={20} color="currentColor" />
+                  </div>
+                  <h3 className="mk-service-card__title">{s.title}</h3>
+                  <p className="mk-service-card__desc">{s.desc}</p>
+                  <div className="mk-service-card__link">
+                    Learn more <Icon name="chevronRight" size={14} />
+                  </div>
+                </Link>
+              </FadeIn>
             ))}
           </div>
         </div>

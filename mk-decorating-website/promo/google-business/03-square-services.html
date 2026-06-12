@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="_shared.css" />
+  <style>
+    .card { background: var(--white); padding: 88px 80px; display: flex; flex-direction: column; }
+    .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 56px; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand .name { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--navy); letter-spacing: -0.02em; }
+    .eyebrow { font-size: 14px; color: var(--teal); }
+    .headline { font-family: var(--font-display); font-weight: 800; font-size: 64px; color: var(--navy); letter-spacing: -0.025em; line-height: 1.05; margin: 16px 0 56px; max-width: 12ch; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+    .tile { background: var(--grey-50); border: 1px solid var(--grey-100); border-radius: 16px; padding: 28px 26px; display: flex; flex-direction: column; gap: 12px; }
+    .tile-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--teal-muted); color: var(--teal-dark); display: flex; align-items: center; justify-content: center; }
+    .tile-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--navy); letter-spacing: -0.01em; }
+    .tile-desc { font-family: var(--font-body); font-weight: 400; font-size: 15px; color: var(--grey-700); line-height: 1.5; }
+    .footer { margin-top: 48px; display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--grey-100); font-family: var(--font-body); font-weight: 600; font-size: 16px; color: var(--grey-700); }
+    .footer .url { color: var(--teal-dark); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="brand">
+        <svg width="42" height="24" viewBox="0 0 144 82" aria-hidden="true">
+          <polygon points="0.816 80.973 72 80.973 36.406 18.688" fill="#00aeae" />
+          <polygon points="72 80.973 143.184 80.973 107.594 18.688" fill="#00aeae" />
+          <polygon points="36.305 1.027 107.59 1.027 72 63.313" fill="#1d3557" />
+        </svg>
+        <span class="name">MK Decorating</span>
+      </div>
+      <div class="eyebrow">WHAT WE DO</div>
+    </div>
+    <div class="headline">Full-service<br/>refurbishment.</div>
+    <div class="grid">
+      <div class="tile">
+        <div class="tile-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="tile-title">Full Refurbishments</div>
+        <div class="tile-desc">Strip-out to final finish, all trades in one team.</div>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22V12h6v10"/></svg>
+        </div>
+        <div class="tile-title">Kitchens & Bathrooms</div>
+        <div class="tile-desc">Complete kitchen and bathroom renovations.</div>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="tile-title">Fitted Joinery</div>
+        <div class="tile-desc">Bespoke wardrobes, alcoves, and built-in storage.</div>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="tile-title">Flooring & Tiling</div>
+        <div class="tile-desc">Hardwood, porcelain, stone — supplied and installed.</div>
+      </div>
+    </div>
+    <div class="footer">
+      <span class="url">mkdecorating.net</span>
+      <span>077 8891 4110</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
 import { initAnalytics } from '../lib/analytics'
+import { initClarity } from '../lib/clarity'
 
 const STORAGE_KEY = 'mk-cookie-consent'
+
+function loadOptionalTrackers() {
+  initAnalytics()
+  initClarity()
+}
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false)
@@ -9,7 +15,7 @@ export default function CookieBanner() {
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'accepted') {
-      initAnalytics()
+      loadOptionalTrackers()
     } else if (stored === null) {
       setVisible(true)
     }
@@ -18,7 +24,7 @@ export default function CookieBanner() {
   const accept = () => {
     localStorage.setItem(STORAGE_KEY, 'accepted')
     setVisible(false)
-    initAnalytics()
+    loadOptionalTrackers()
   }
 
   const reject = () => {
